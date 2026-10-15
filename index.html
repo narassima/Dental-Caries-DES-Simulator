@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dental Caries Discrete Event Simulation (DES) Platform | CDOE 2026</title>
+  <meta name="description" content="State-level and Global Discrete Event Simulation Platform for School-Based Dental Caries Prevention Through Task-Shifting. Based on CDOE 2026 research.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- LinkedIn-style Pastel Theme Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Bar (LinkedIn Style Header) -->
+  <header class="top-navbar">
+    <div class="brand-section">
+      <div class="brand-logo-icon">
+        <i class="fas fa-tooth"></i>
+      </div>
+      <div>
+        <h1 class="brand-title">Dental Caries DES Simulator</h1>
+        <div class="brand-subtitle">Optimising School-Based Oral Health Through Task-Shifting (CDOE 2026)</div>
+      </div>
+    </div>
+
+    <!-- Right Header Controls (Two-Row Organized Layout) -->
+    <div class="nav-actions-container">
+      <!-- Row 1: Country Scope, Scenario Status Badge, GitHub -->
+      <div class="nav-actions-row nav-actions-row-top">
+        <div class="country-selector-wrap">
+          <span class="country-selector-label"><i class="fas fa-globe-asia"></i> Country:</span>
+          <select id="countrySelect" class="country-dropdown">
+            <option value="India" selected>India (35 States & Baseline)</option>
+            <option value="Custom">Custom Country Modeler</option>
+          </select>
+          <button class="info-btn" data-field="country_selector" title="About Country Models">i</button>
+        </div>
+
+        <div id="activeScenarioBadge" class="badge">
+          India: Plausible (8 camps/mo, TS 30%, φ=0.5)
+        </div>
+      </div>
+
+      <!-- Row 2: How to Use Guide & Excel Data Management Suite -->
+      <div class="nav-actions-row nav-actions-row-bottom">
+        <button id="btnOpenGuide" class="btn btn-secondary btn-sm" title="View interactive step-by-step user guide">
+          <i class="fas fa-book-reader"></i> How to Use Guide
+        </button>
+
+        <button id="btnDownloadTemplate" class="btn btn-outline btn-sm" title="Download Excel input template (.xlsx) for custom demographics, workforce, and provinces">
+          <i class="fas fa-file-download"></i> Template (.xlsx)
+        </button>
+
+        <label class="btn btn-outline btn-sm" style="cursor:pointer; margin:0;" title="Upload custom country/state input file (.xlsx, .csv, .json)">
+          <i class="fas fa-file-upload"></i> Upload Template
+          <input type="file" id="fileUploadTemplate" accept=".xlsx, .xls, .csv, .json" style="display:none">
+        </label>
+
+        <button id="btnExportResultsExcel" class="btn btn-primary btn-sm" title="Export full DES simulation results across all tiers, states, queues, and PSA to Excel (.xlsx)">
+          <i class="fas fa-file-excel"></i> Export Results (.xlsx)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Container -->
+  <div class="app-container">
+
+    <!-- Custom Country Notice (Visible when Custom Country is active) -->
+    <div id="customCountryNotice" class="card" style="display:none; border-color:var(--pastel-amber-border); background:var(--pastel-amber-bg);">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <strong style="color:var(--pastel-amber-text);"><i class="fas fa-info-circle"></i> Custom Country Mode Active</strong>
+          <p style="font-size:0.82rem; color:var(--text-muted); margin-top:2px;">
+            You are simulating custom inputs. Modify school demographics, dentist workforce, caries prevalence, and provinces in the <strong>Custom Country Modeler</strong> tab.
+          </p>
+        </div>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-tab=\'custom-country\']').click()">
+          <i class="fas fa-sliders-h"></i> Configure Country
+        </button>
+      </div>
+    </div>
+
+    <!-- Tab Navigation Bar -->
+    <nav class="tabs-navigation">
+      <button class="tab-btn active" data-tab="dashboard">
+        <i class="fas fa-chart-pie"></i> Executive Dashboard
+      </button>
+      <button class="tab-btn" data-tab="camp-sim">
+        <i class="fas fa-clock"></i> Camp DES & Timeline
+      </button>
+      <button class="tab-btn" data-tab="manuscript-plots">
+        <i class="fas fa-chart-line"></i> Manuscript Plots (Fig 1–9)
+      </button>
+      <button class="tab-btn" data-tab="states">
+        <i class="fas fa-map-marked-alt"></i> Subnational States (35)
+      </button>
+      <button class="tab-btn" data-tab="scenarios">
+        <i class="fas fa-th"></i> Scenario Grid & PSA
+      </button>
+      <button class="tab-btn" data-tab="custom-country">
+        <i class="fas fa-globe"></i> Custom Country Modeler
+      </button>
+      <button class="tab-btn" data-tab="docs">
+        <i class="fas fa-book-open"></i> Methodology & Equations
+      </button>
+    </nav>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 1: EXECUTIVE DASHBOARD & FEASIBILITY TIERS                             -->
+    <!-- ========================================================================= -->
+    <section id="tab-dashboard" class="tab-panel active">
+      
+      <!-- Top KPI Banner -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">
+            <span>Unique Children Reached</span>
+            <button class="info-btn" data-field="unique_children" title="Learn more">i</button>
+          </div>
+          <div id="kpiUniqueReached" class="kpi-value">4.75 M</div>
+          <div class="kpi-subtext"><i class="fas fa-user-check"></i> Non-duplicate children/yr</div>
+        </div>
+
+        <div class="kpi-card green">
+          <div class="kpi-label">
+            <span>Annual Coverage</span>
+            <button class="info-btn" data-field="annual_coverage" title="Learn more">i</button>
+          </div>
+          <div id="kpiCoverage" class="kpi-value">12.0%</div>
+          <div class="kpi-subtext"><i class="fas fa-bullseye"></i> Share of caries population</div>
+        </div>
+
+        <div class="kpi-card rose">
+          <div class="kpi-label">
+            <span>Unmet Caries Burden</span>
+            <button class="info-btn" data-field="unmet_need" title="Learn more">i</button>
+          </div>
+          <div id="kpiUnmetNeed" class="kpi-value">34.72 M</div>
+          <div class="kpi-subtext"><i class="fas fa-exclamation-triangle"></i> Children remaining unreached</div>
+        </div>
+
+        <div class="kpi-card amber">
+          <div class="kpi-label">
+            <span>Dentists Needed</span>
+            <button class="info-btn" data-field="dentists_needed" title="Learn more">i</button>
+          </div>
+          <div id="kpiDentistsNeeded" class="kpi-value">18,379</div>
+          <div class="kpi-subtext"><i class="fas fa-user-md"></i> To eliminate unmet gap</div>
+        </div>
+
+        <div class="kpi-card purple">
+          <div class="kpi-label">
+            <span>Dentist Utilization</span>
+            <button class="info-btn" data-field="dent_util" title="Learn more">i</button>
+          </div>
+          <div id="kpiDentUtil" class="kpi-value">15.0%</div>
+          <div class="kpi-subtext"><i class="fas fa-business-time"></i> Clinical procedure time share</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-label">
+            <span>YLDs Averted (In-Year)</span>
+            <button class="info-btn" data-field="yld_inyear" title="Learn more">i</button>
+          </div>
+          <div id="kpiYldInYear" class="kpi-value">7,028</div>
+          <div class="kpi-subtext">
+            <i class="fas fa-shield-alt"></i> Duration-adj: <span id="kpiYldDur" style="font-weight:700; margin-left:3px;">24,082</span>
+            <button class="info-btn" data-field="yld_dur" title="Duration-Adjusted YLDs" style="margin-left:4px;">i</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feasibility Tiers Cards (Table 1 Benchmarks) -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <i class="fas fa-layer-group" style="color:var(--primary);"></i> Feasibility Tiers (Figure 3 & Table 1)
+              <button class="info-btn" data-field="feasibility_tiers" title="About Feasibility Tiers">i</button>
+            </h2>
+            <div class="card-desc">Click any tier card to load its exact operational intensity and compare national outcomes.</div>
+          </div>
+          <button class="btn btn-sm btn-outline btn-hd-download" data-chart-id="chartTiersCanvas" data-title="National Feasibility Tiers: Coverage & Population Reach" data-subtitle="Source: Community Dentistry and Oral Epidemiology (CDOE 2026)">
+            <i class="fas fa-camera"></i> Download HD Image
+          </button>
+        </div>
+
+        <div class="tiers-grid">
+          <div class="tier-card" data-tier="Status quo">
+            <div class="tier-title-row">
+              <span class="tier-name">Status Quo</span>
+              <span class="badge">Baseline <button class="info-btn" data-field="tier_status_quo" style="width:14px; height:14px; font-size:0.55rem;">i</button></span>
+            </div>
+            <div class="tier-specs">2 camps/mo | No delegation (TS 0%) | φ = 0.5</div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width: 2.37%; background: #94a3b8;"></div>
+            </div>
+            <div class="tier-metric-row">
+              <span>National Coverage:</span>
+              <span class="val">2.37%</span>
+            </div>
+            <div class="tier-metric-row">
+              <span>Children Reached:</span>
+              <span class="val">0.93 Million</span>
+            </div>
+            <div class="tier-metric-row">
+              <span>Dentist Utilization:</span>
+              <span class="val">3.5%</span>
+            </div>
+          </div>
+
+          <div class="tier-card active" data-tier="Plausible">
+            <div class="tier-title-row">
+              <span class="tier-name">Plausible (Headline)</span>
+              <span class="badge badge-green">Recommended <button class="info-btn" data-field="tier_plausible" style="width:14px; height:14px; font-size:0.55rem;">i</button></span>
+            </div>
+            <div class="tier-specs">8 camps/mo (2 days/wk) | TS 30% (+30% referrals) | φ = 0.5</div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width: 12.03%; background: var(--primary);"></div>
+            </div>
+            <div class="tier-metric-row">
+              <span>National Coverage:</span>
+              <span class="val" style="color:var(--primary);">12.03%</span>
+            </div>
+            <div class="tier-metric-row">
+              <span>Children Reached:</span>
+              <span class="val">4.75 Million</span>
+            </div>
+            <div class="tier-metric-row">
+              <span>Dentist Utilization:</span>
+              <span class="val">15.0%</span>
+            </div>
+          </div>
+
+          <div class="tier-card" data-tier="Stretch">
+            <div class="tier-title-row">
+              <span class="tier-name">Stretch</span>
+              <span class="badge badge-purple">High Reach <button class="info-btn" data-field="tier_stretch" style="width:14px; height:14px; font-size:0.55rem;">i</button></span>
+            </div>
+            <div class="tier-specs">12 camps/mo (3 days/wk) | TS 30% | φ = 0.8</div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width: 27.35%; background: var(--pastel-purple-text);"></div>
+            </div>
+            <div class="tier-metric-row">
+              <span>National Coverage:</span>
+              <span class="val">27.35%</span>
+            </div>
+            <div class="tier-metric-row">
+              <span>Children Reached:</span>
+              <span class="val">10.80 Million</span>
+            </div>
+            <div class="tier-metric-row">
+              <span>Dentist Utilization:</span>
+              <span class="val">22.5%</span>
+            </div>
+          </div>
+
+          <div class="tier-card" data-tier="Theoretical max">
+            <div class="tier-title-row">
+              <span class="tier-name">Theoretical Max</span>
+              <span class="badge badge-amber">Full Capacity <button class="info-btn" data-field="tier_theomax" style="width:14px; height:14px; font-size:0.55rem;">i</button></span>
+            </div>
+            <div class="tier-specs">22 camps/mo (daily) | TS 30% | φ = 1.0 (all dentists)</div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" style="width: 51.15%; background: var(--pastel-amber-text);"></div>
+            </div>
+            <div class="tier-metric-row">
+              <span>National Coverage:</span>
+              <span class="val">51.15%</span>
+            </div>
+            <div class="tier-metric-row">
+              <span>Children Reached:</span>
+              <span class="val">20.18 Million</span>
+            </div>
+            <div class="tier-metric-row">
+              <span>Dentist Utilization:</span>
+              <span class="val">41.3%</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="height: 270px; margin-top:10px;">
+          <canvas id="chartTiersCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Real-Time Policy Sliders Control Panel -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <i class="fas fa-sliders-h" style="color:var(--primary);"></i> Interactive What-If Scenario Sliders
+            </h2>
+            <div class="card-desc">Adjust operational camp intensity, task delegation, and workforce availability in real time.</div>
+          </div>
+        </div>
+
+        <div class="controls-grid">
+          <div class="control-item">
+            <div class="control-label-row">
+              <span>Camps / Dentist / Month <button class="info-btn" data-field="camps_slider">i</button></span>
+              <span id="badgeCamps" class="control-value-badge">8 camps/mo</span>
+            </div>
+            <input type="range" id="sliderCamps" min="2" max="22" step="2" value="8">
+            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--text-dim); margin-top:2px;">
+              <span>2 (Status quo)</span>
+              <span>8 (Plausible)</span>
+              <span>22 (Daily)</span>
+            </div>
+          </div>
+
+          <div class="control-item">
+            <div class="control-label-row">
+              <span>Task-Shifting Level (TS%) <button class="info-btn" data-field="ts_slider">i</button></span>
+              <span id="badgeTs" class="control-value-badge">30% TS</span>
+            </div>
+            <input type="range" id="sliderTs" min="0" max="30" step="10" value="30">
+            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--text-dim); margin-top:2px;">
+              <span>0% (No TS)</span>
+              <span>10%</span>
+              <span>20%</span>
+              <span>30% (OHE+FV)</span>
+            </div>
+          </div>
+
+          <div class="control-item">
+            <div class="control-label-row">
+              <span>Workforce Availability (φ) <button class="info-btn" data-field="phi_slider">i</button></span>
+              <span id="badgePhi" class="control-value-badge">φ = 0.50</span>
+            </div>
+            <input type="range" id="sliderPhi" min="0.1" max="1.0" step="0.05" value="0.5">
+            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--text-dim); margin-top:2px;">
+              <span>10% available</span>
+              <span>50% (Base)</span>
+              <span>100% (All)</span>
+            </div>
+          </div>
+
+          <div class="control-item">
+            <div class="control-label-row">
+              <span>Repeat-Visit Share (ρ) <button class="info-btn" data-field="rho_slider">i</button></span>
+              <span id="badgeRho" class="control-value-badge">ρ = 15%</span>
+            </div>
+            <input type="range" id="sliderRho" min="0.05" max="0.30" step="0.05" value="0.15">
+            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--text-dim); margin-top:2px;">
+              <span>5%</span>
+              <span>15% (Base)</span>
+              <span>30%</span>
+            </div>
+          </div>
+
+          <div class="control-item">
+            <div class="control-label-row">
+              <span>Preventive Effect (R) <button class="info-btn" data-field="r_slider">i</button></span>
+              <span id="badgeR" class="control-value-badge">R = 0%</span>
+            </div>
+            <input type="range" id="sliderR" min="0" max="5" step="5" value="0">
+            <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:var(--text-dim); margin-top:2px;">
+              <span>R0 (No cut)</span>
+              <span>R5 (-5pp OHE need)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 2: DISCRETE EVENT SIMULATION (DES) CAMP STUDIO & ANIMATED GANTT       -->
+    <!-- ========================================================================= -->
+    <section id="tab-camp-sim" class="tab-panel">
+      <!-- Camp Architecture & Animation Control Card -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <i class="fas fa-play-circle" style="color:var(--primary);"></i> Interactive Single Camp Simulation & Scheduling
+              <button class="info-btn" data-field="shift_length" title="About 480-minute shift">i</button>
+            </h2>
+            <div class="card-desc">
+              Watch individual students arrive as a batch, get admitted by the dental auxiliary, and get triaged into queues for the dentist, auxiliary, and teacher under the 480-minute shift limit.
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulation Interactive Playback & Speed Control Bar -->
+        <div class="sim-controls-bar">
+          <div class="sim-btn-group">
+            <button id="btnPlayCamp" class="btn btn-primary" title="Play / Resume animated simulation">
+              <i class="fas fa-play"></i> <span id="lblPlayBtn">Start Animation</span>
+            </button>
+            <button id="btnPauseCamp" class="btn btn-outline" title="Pause simulation">
+              <i class="fas fa-pause"></i> Pause
+            </button>
+            <button id="btnStepCamp" class="btn btn-outline" title="Step forward by 1 student">
+              <i class="fas fa-step-forward"></i> Step
+            </button>
+            <button id="btnResetCamp" class="btn btn-outline" title="Reset & draw new students">
+              <i class="fas fa-redo"></i> Reset
+            </button>
+            <button id="btnInstantCamp" class="btn btn-secondary" title="Instantly complete full camp">
+              <i class="fas fa-bolt"></i> Instant Run
+            </button>
+          </div>
+
+          <div class="sim-clock-display">
+            <i class="fas fa-stopwatch"></i> <span id="campClock">09:00 AM (0 min)</span>
+          </div>
+
+          <div class="speed-selector-group">
+            <span>Speed:</span>
+            <span class="speed-chip" data-speed="0.5">0.5x Slow</span>
+            <span class="speed-chip active" data-speed="1">1x Normal</span>
+            <span class="speed-chip" data-speed="2">2x Fast</span>
+            <span class="speed-chip" data-speed="5">5x Turbo</span>
+          </div>
+        </div>
+
+        <!-- Live Scenario & Camp Operational Sliders (Synchronized with Dashboard) -->
+        <div class="camp-sliders-panel">
+          <div class="camp-sliders-header">
+            <div class="camp-sliders-title">
+              <i class="fas fa-sliders-h" style="color:var(--primary);"></i> 
+              Live Scenario & Camp Operational Sliders
+            </div>
+            <div class="camp-tier-quick-picks">
+              <span style="font-size:0.73rem; color:var(--text-muted); margin-right:4px;">Policy Tiers:</span>
+              <button class="btn btn-outline btn-sm btn-camp-tier" data-tier="Status quo" title="2 camps/mo, Solo Dentist (0% TS)">Status Quo</button>
+              <button class="btn btn-secondary btn-sm btn-camp-tier active" data-tier="Plausible" title="8 camps/mo, 30% TS Delegation">Plausible</button>
+              <button class="btn btn-outline btn-sm btn-camp-tier" data-tier="Stretch" title="12 camps/mo, 30% TS, φ=0.8">Stretch</button>
+              <button class="btn btn-outline btn-sm btn-camp-tier" data-tier="Theoretical max" title="22 camps/mo, 30% TS, φ=1.0">Theoretical Max</button>
+            </div>
+          </div>
+
+          <div class="controls-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 10px;">
+            <!-- Slider 1: Task-Shifting Level (TS%) -->
+            <div class="control-item" style="padding:10px;">
+              <div class="control-label-row">
+                <span>Task-Shifting (TS%) <button class="info-btn" data-field="ts_slider">i</button></span>
+                <span id="badgeCampTs" class="control-value-badge">30% TS</span>
+              </div>
+              <input type="range" id="sliderCampTs" min="0" max="30" step="10" value="30">
+              <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:var(--text-dim); margin-top:2px;">
+                <span>0% (Solo Dent)</span>
+                <span>10%</span>
+                <span>20%</span>
+                <span>30% (OHE+FV)</span>
+              </div>
+            </div>
+
+            <!-- Slider 2: Camps / Dentist / Month -->
+            <div class="control-item" style="padding:10px;">
+              <div class="control-label-row">
+                <span>Camps / Mo <button class="info-btn" data-field="camps_slider">i</button></span>
+                <span id="badgeCampCamps" class="control-value-badge">8 camps/mo</span>
+              </div>
+              <input type="range" id="sliderCampCamps" min="2" max="22" step="2" value="8">
+              <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:var(--text-dim); margin-top:2px;">
+                <span>2 (Status quo)</span>
+                <span>8 (Plausible)</span>
+                <span>22 (Daily)</span>
+              </div>
+            </div>
+
+            <!-- Slider 3: Arrival Batch Size Scale -->
+            <div class="control-item" style="padding:10px;">
+              <div class="control-label-row">
+                <span>Arrival Batch Scale <button class="info-btn" data-field="batch_arrival">i</button></span>
+                <span id="badgeCampBatchScale" class="control-value-badge">1.0× (~14 std)</span>
+              </div>
+              <input type="range" id="sliderCampBatchScale" min="0.6" max="1.6" step="0.2" value="1.0">
+              <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:var(--text-dim); margin-top:2px;">
+                <span>0.6× (8–10)</span>
+                <span>1.0× (14 std)</span>
+                <span>1.6× (20–24)</span>
+              </div>
+            </div>
+
+            <!-- Slider 4: Preventive OHE Effect (R) -->
+            <div class="control-item" style="padding:10px;">
+              <div class="control-label-row">
+                <span>Preventive Effect (R) <button class="info-btn" data-field="r_slider">i</button></span>
+                <span id="badgeCampR" class="control-value-badge">R = 0%</span>
+              </div>
+              <input type="range" id="sliderCampR" min="0" max="5" step="5" value="0">
+              <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:var(--text-dim); margin-top:2px;">
+                <span>R0 (Base mix)</span>
+                <span>R5 (-5pp Restorative)</span>
+              </div>
+            </div>
+
+            <!-- Slider 5: Workforce Availability (φ) -->
+            <div class="control-item" style="padding:10px;">
+              <div class="control-label-row">
+                <span>Workforce Deployed (φ) <button class="info-btn" data-field="phi_slider">i</button></span>
+                <span id="badgeCampPhi" class="control-value-badge">φ = 0.50</span>
+              </div>
+              <input type="range" id="sliderCampPhi" min="0.1" max="1.0" step="0.05" value="0.5">
+              <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:var(--text-dim); margin-top:2px;">
+                <span>10% (Sparse)</span>
+                <span>50% (Base)</span>
+                <span>100% (All)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Flowchart Pipeline with Active Step Indicators -->
+        <div class="flowchart-pipeline">
+          <div id="stepArrival" class="flow-step">
+            <div class="flow-step-icon"><i class="fas fa-users"></i></div>
+            <div class="flow-step-title">1. Batch Arrival <button class="info-btn" data-field="batch_arrival" style="width:14px; height:14px; font-size:0.55rem;">i</button></div>
+            <div id="stepArrivalDesc" class="flow-step-desc">14 students referred</div>
+          </div>
+
+          <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+
+          <div id="stepAdmission" class="flow-step">
+            <div class="flow-step-icon" style="background:var(--pastel-amber-bg); color:var(--pastel-amber-text);"><i class="fas fa-clipboard-check"></i></div>
+            <div class="flow-step-title">2. Auxiliary Triage <button class="info-btn" data-field="aux_admission" style="width:14px; height:14px; font-size:0.55rem;">i</button></div>
+            <div id="stepAdmissionDesc" class="flow-step-desc">FIFO U(0.5, 1.5) min</div>
+          </div>
+
+          <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+
+          <div id="stepRouting" class="flow-step">
+            <div class="flow-step-icon"><i class="fas fa-random"></i></div>
+            <div class="flow-step-title">3. Triage Routing <button class="info-btn" data-field="triage_routing" style="width:14px; height:14px; font-size:0.55rem;">i</button></div>
+            <div id="stepRoutingDesc" class="flow-step-desc">OHE / FV / Restorations</div>
+          </div>
+
+          <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+
+          <div id="stepTreatment" class="flow-step">
+            <div class="flow-step-icon" style="background:var(--pastel-green-bg); color:var(--pastel-green-text);"><i class="fas fa-check-double"></i></div>
+            <div class="flow-step-title">4. Treatment Execution <button class="info-btn" data-field="shift_cutoff" style="width:14px; height:14px; font-size:0.55rem;">i</button></div>
+            <div id="stepTreatmentDesc" class="flow-step-desc">Cut-off at 480 min</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Camp Outcome Metrics -->
+      <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
+        <div class="kpi-card">
+          <div class="kpi-label">Referred Students</div>
+          <div id="campReferredCount" class="kpi-value">14</div>
+          <div class="kpi-subtext">Arrival batch size</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-label">Completed / Served</div>
+          <div id="campServedCount" class="kpi-value">14</div>
+          <div class="kpi-subtext">Finished within shift</div>
+        </div>
+        <div class="kpi-card rose">
+          <div class="kpi-label">Unserved (Cut-off)</div>
+          <div id="campUnservedCount" class="kpi-value">0</div>
+          <div class="kpi-subtext">Over 480 min cut-off</div>
+        </div>
+        <div class="kpi-card amber">
+          <div class="kpi-label">Dentist Busy Time</div>
+          <div id="campDentBusy" class="kpi-value">225 min (46.9%)</div>
+          <div class="kpi-subtext">Clinical procedures</div>
+        </div>
+        <div class="kpi-card purple">
+          <div class="kpi-label">Auxiliary Busy Time</div>
+          <div id="campAuxBusy" class="kpi-value">34 min (7.1%)</div>
+          <div class="kpi-subtext">Admissions + Fluoride</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Teacher Busy Time</div>
+          <div id="campTeachBusy" class="kpi-value">72 min (15.0%)</div>
+          <div class="kpi-subtext">Oral health education</div>
+        </div>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- 2D DISCRETE EVENT SIMULATION (DES) FACILITY & CLINIC ROOM VISUALIZER -->
+      <!-- ===================================================================== -->
+      <div class="card des-facility-card">
+        <div class="card-header" style="flex-wrap:wrap; gap:10px;">
+          <div>
+            <h2 class="card-title">
+              <i class="fas fa-clinic-medical" style="color:var(--primary);"></i> School Dental Clinic DES Facility Visualizer
+              <button class="info-btn" data-field="facility_des_view" title="About 2D DES Animation">i</button>
+            </h2>
+            <div class="card-desc">
+              Visualise students arriving at the school clinic, waiting in queues, and receiving treatment across Provider Workstations. See resources switch between <span class="badge badge-green">BUSY</span> and <span class="badge" style="background:#f1f5f9; color:#64748b;">IDLE</span>.
+            </div>
+          </div>
+          
+          <!-- Live Flow Throughput Badges -->
+          <div class="facility-status-strip">
+            <div class="stat-pill"><i class="fas fa-sign-in-alt" style="color:#0a66c2;"></i> Arrived: <strong id="statFacArrived">14</strong></div>
+            <div class="stat-pill"><i class="fas fa-chair" style="color:#f59e0b;"></i> In Queues: <strong id="statFacQueued">0</strong></div>
+            <div class="stat-pill"><i class="fas fa-user-clock" style="color:#8b5cf6;"></i> Under Treatment: <strong id="statFacTreating">0</strong></div>
+            <div class="stat-pill"><i class="fas fa-check-circle" style="color:#10b981;"></i> Discharged: <strong id="statFacDone">0</strong></div>
+            <button class="btn btn-sm btn-outline btn-hd-download" data-chart-id="facilityFloorplan" data-title="School Dental Clinic DES Facility Animation" data-subtitle="2D Discrete Event Simulation Layout | CDOE 2026">
+              <i class="fas fa-camera"></i> Snapshot HD
+            </button>
+          </div>
+        </div>
+
+        <!-- Interactive 2D Floorplan Grid -->
+        <div id="facilityFloorplan" class="facility-floorplan">
+          <!-- Zone 1: Waiting Hall & Reception Queue -->
+          <div class="facility-zone zone-reception">
+            <div class="zone-header">
+              <span><i class="fas fa-door-open" style="color:#0a66c2;"></i> 1. Reception & Waiting Hall</span>
+              <span id="badgeReceptionCount" class="badge">14 Waiting</span>
+            </div>
+            <div class="zone-content">
+              <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">Referred students arrive at 09:00 AM:</div>
+              <div id="queueReception" class="student-queue-container">
+                <!-- Dynamically populated student avatar chips -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Zone 2: Workstations Cluster (Triage, Dentist Operatory, Auxiliary Fluoride, Teacher) -->
+          <div class="treatment-bays-cluster">
+            
+            <!-- Workstation A: Auxiliary Admissions & Triage Desk -->
+            <div class="facility-zone zone-triage">
+              <div class="zone-header">
+                <span><i class="fas fa-clipboard-list" style="color:#8b5cf6;"></i> 2. Auxiliary Triage Desk</span>
+                <span id="badgeAuxTriageStatus" class="resource-status-tag status-idle">IDLE</span>
+              </div>
+              <div class="zone-content workstation-content">
+                <div class="provider-avatar-box">
+                  <div class="provider-icon aux-avatar"><i class="fas fa-user-nurse"></i></div>
+                  <div class="provider-info">
+                    <div class="provider-name">Dental Auxiliary</div>
+                    <div class="provider-role">FIFO Triage U(0.5, 1.5)m</div>
+                  </div>
+                </div>
+                <div id="patientAuxTriage" class="current-patient-box">
+                  <div class="patient-placeholder">Awaiting student arrival...</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Workstation B: Dentist Clinical Operatory Chair -->
+            <div class="facility-zone zone-dentist">
+              <div class="zone-header">
+                <span><i class="fas fa-teeth-open" style="color:var(--primary);"></i> 3A. Dentist Operatory Chair</span>
+                <span id="badgeDentistStatus" class="resource-status-tag status-idle">IDLE</span>
+              </div>
+              <div class="zone-content workstation-content">
+                <div class="station-queue-row">
+                  <span class="queue-label">Queue outside chair:</span>
+                  <div id="queueDentist" class="mini-queue-strip"></div>
+                </div>
+                <div class="chair-area">
+                  <div class="provider-avatar-box">
+                    <div class="provider-icon dent-avatar"><i class="fas fa-user-md"></i></div>
+                    <div class="provider-info">
+                      <div class="provider-name">Dental Surgeon</div>
+                      <div class="provider-role">Restorations (ART/GIC)</div>
+                    </div>
+                  </div>
+                  <div id="patientDentist" class="current-patient-box">
+                    <div class="patient-placeholder">Chair sanitized & idle</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Workstation C: Auxiliary Preventive Fluoride Bay -->
+            <div class="facility-zone zone-aux-fv">
+              <div class="zone-header">
+                <span><i class="fas fa-shield-alt" style="color:#10b981;"></i> 3B. Preventive Fluoride Bay</span>
+                <span id="badgeAuxFvStatus" class="resource-status-tag status-idle">IDLE</span>
+              </div>
+              <div class="zone-content workstation-content">
+                <div class="station-queue-row">
+                  <span class="queue-label">Queue outside bay:</span>
+                  <div id="queueAuxFv" class="mini-queue-strip"></div>
+                </div>
+                <div class="chair-area">
+                  <div class="provider-avatar-box">
+                    <div class="provider-icon aux-avatar"><i class="fas fa-hand-holding-medical"></i></div>
+                    <div class="provider-info">
+                      <div class="provider-name">Auxiliary Nurse</div>
+                      <div class="provider-role">5% NaF Fluoride Varnish</div>
+                    </div>
+                  </div>
+                  <div id="patientAuxFv" class="current-patient-box">
+                    <div class="patient-placeholder">Bay ready for triaged cases</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Workstation D: Teacher Oral Health Coaching Room -->
+            <div class="facility-zone zone-teacher">
+              <div class="zone-header">
+                <span><i class="fas fa-chalkboard-teacher" style="color:#06b6d4;"></i> 3C. Teacher Oral Health Room</span>
+                <span id="badgeTeacherStatus" class="resource-status-tag status-idle">IDLE</span>
+              </div>
+              <div class="zone-content workstation-content">
+                <div class="station-queue-row">
+                  <span class="queue-label">Queue outside room:</span>
+                  <div id="queueTeacher" class="mini-queue-strip"></div>
+                </div>
+                <div class="chair-area">
+                  <div class="provider-avatar-box">
+                    <div class="provider-icon teach-avatar"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <div class="provider-info">
+                      <div class="provider-name">Trained Teacher</div>
+                      <div class="provider-role">Oral Health Education (OHE)</div>
+                    </div>
+                  </div>
+                  <div id="patientTeacher" class="current-patient-box">
+                    <div class="patient-placeholder">Room ready for students</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Zone 3: Discharge Lounge & Class Hand-off -->
+          <div class="facility-zone zone-discharge">
+            <div class="zone-header">
+              <span><i class="fas fa-graduation-cap" style="color:#10b981;"></i> 4. Discharge & Classroom Return</span>
+              <span id="badgeDischargedCount" class="badge badge-green">0 Completed</span>
+            </div>
+            <div class="zone-content">
+              <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">Students completed treatment, received brushing kit & referral:</div>
+              <div id="queueDischarge" class="student-queue-container">
+                <!-- Discharged students appear here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Educational Explainer Bar for Non-Technical Stakeholders -->
+        <div class="des-insight-banner">
+          <div class="insight-icon"><i class="fas fa-lightbulb"></i></div>
+          <div class="insight-text">
+            <strong>How to Read This Discrete Event Simulation:</strong> 
+            In this real-time floorplan, watch how task-shifting unlocks capacity. 
+            In the morning (09:00–09:15), the Auxiliary triages all 14 students. Because fluoride varnish is delegated to the Auxiliary and brushing education to the Teacher, the Dentist's operatory chair focuses exclusively on cavity restorations (ART), eliminating the single-provider bottleneck and tripling camp throughput!
+          </div>
+        </div>
+      </div>
+
+      <!-- Upgraded Multi-Track Gantt Timeline -->
+      <div id="timelineContainer" class="timeline-container">
+        <!-- Zoom & View Control Bar -->
+        <div class="timeline-zoom-bar">
+          <div>
+            <h3 style="font-size:0.95rem; font-weight:700;"><i class="fas fa-stream" style="color:var(--primary);"></i> Camp Schedule Gantt Timeline (0 to 480 Minutes)</h3>
+            <span style="font-size:0.75rem; color:var(--text-muted);">Separate non-overlapping tracks for Dentist, Auxiliary Admissions, Auxiliary Fluoride, and Teacher</span>
+          </div>
+
+          <div class="zoom-btn-group">
+            <span style="font-size:0.75rem; font-weight:600; color:var(--text-dim); margin-right:4px;">Zoom:</span>
+            <button class="zoom-btn active" data-zoom="full">Full Shift (0–480m)</button>
+            <button class="zoom-btn" data-zoom="triage">Triage Zoom (0–60m)</button>
+            <button class="zoom-btn" data-zoom="midday">Midday (60–240m)</button>
+            <button class="zoom-btn" data-zoom="afternoon">Afternoon (240–480m)</button>
+            <button id="btnDownloadGanttHD" class="btn btn-sm btn-outline" style="margin-left:8px;" title="Export 300 DPI high-definition image of the 4-track camp schedule">
+              <i class="fas fa-camera"></i> Download HD Gantt Image
+            </button>
+          </div>
+        </div>
+
+        <!-- Procedure Legend with Color Flags -->
+        <div class="gantt-legend-grid">
+          <div class="legend-flag-item" data-filter="all">
+            <strong>Legend & Flags:</strong>
+          </div>
+          <div class="legend-flag-item" data-filter="OHE">
+            <span class="legend-flag-color" style="background:var(--c-ohe);"></span>
+            <span>Oral Health Education (OHE) — Teacher</span>
+          </div>
+          <div class="legend-flag-item" data-filter="FV">
+            <span class="legend-flag-color" style="background:var(--c-fv);"></span>
+            <span>Fluoride Varnish (FV) — Auxiliary</span>
+          </div>
+          <div class="legend-flag-item" data-filter="ART">
+            <span class="legend-flag-color" style="background:var(--c-art);"></span>
+            <span>ART — Dentist</span>
+          </div>
+          <div class="legend-flag-item" data-filter="SSC">
+            <span class="legend-flag-color" style="background:var(--c-ssc);"></span>
+            <span>Stainless Steel Crown — Dentist</span>
+          </div>
+          <div class="legend-flag-item" data-filter="Pulp">
+            <span class="legend-flag-color" style="background:var(--c-pulp);"></span>
+            <span>Pulpectomy — Dentist</span>
+          </div>
+          <div class="legend-flag-item" data-filter="GIC">
+            <span class="legend-flag-color" style="background:var(--c-gic);"></span>
+            <span>GIC / Composite — Dentist</span>
+          </div>
+          <div class="legend-flag-item" data-filter="Scale">
+            <span class="legend-flag-color" style="background:var(--c-scale);"></span>
+            <span>Scaling — Dentist</span>
+          </div>
+          <div class="legend-flag-item" data-filter="Adm">
+            <span class="legend-flag-color" style="background:var(--c-adm);"></span>
+            <span>Admission Triage — Auxiliary</span>
+          </div>
+        </div>
+
+        <!-- Timeline Hours Scale -->
+        <div id="timelineHeaderHours" class="timeline-header-hours">
+          <span class="timeline-hour-mark">09:00 AM (0m)</span>
+          <span class="timeline-hour-mark">10:00 AM (60m)</span>
+          <span class="timeline-hour-mark">11:00 AM (120m)</span>
+          <span class="timeline-hour-mark">12:00 PM (180m)</span>
+          <span class="timeline-hour-mark">01:00 PM (240m)</span>
+          <span class="timeline-hour-mark">02:00 PM (300m)</span>
+          <span class="timeline-hour-mark">03:00 PM (360m)</span>
+          <span class="timeline-hour-mark">04:00 PM (420m)</span>
+          <span class="timeline-hour-mark">05:00 PM (480m)</span>
+        </div>
+
+        <!-- Track 1: Dentist -->
+        <div class="timeline-row">
+          <div class="timeline-server-label">
+            <i class="fas fa-user-md" style="color:var(--primary);"></i> Dentist (Clinical)
+          </div>
+          <div id="trackDentist" class="timeline-track"></div>
+        </div>
+
+        <!-- Track 2: Auxiliary Admissions (NVA) -->
+        <div class="timeline-row">
+          <div class="timeline-server-label">
+            <i class="fas fa-clipboard-check" style="color:var(--c-adm);"></i> Auxiliary (Triage)
+          </div>
+          <div id="trackAuxAdmission" class="timeline-track"></div>
+        </div>
+
+        <!-- Track 3: Auxiliary Fluoride Varnish -->
+        <div class="timeline-row">
+          <div class="timeline-server-label">
+            <i class="fas fa-user-nurse" style="color:var(--c-fv);"></i> Auxiliary (Fluoride)
+          </div>
+          <div id="trackAuxFV" class="timeline-track"></div>
+        </div>
+
+        <!-- Track 4: Teacher (OHE) -->
+        <div class="timeline-row">
+          <div class="timeline-server-label">
+            <i class="fas fa-chalkboard-teacher" style="color:var(--c-ohe);"></i> Teacher (OHE)
+          </div>
+          <div id="trackTeacher" class="timeline-track"></div>
+        </div>
+
+        <!-- Live Camp Event Log -->
+        <div style="margin-top:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="font-size:0.8rem; color:var(--text-muted);"><i class="fas fa-terminal"></i> Live Camp Chronological Event Feed:</strong>
+            <button id="btnClearLog" class="btn btn-outline btn-sm">Clear Log</button>
+          </div>
+          <div id="campEventLog" class="camp-event-log">
+            <div class="log-entry"><span class="time">[09:00 AM / 0m]</span> Dental camp initialized. Ready for batch arrival.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student Queue Log Table -->
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom:14px;"><i class="fas fa-list-ol"></i> Student Triage & Treatment Log</h3>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Student ID</th>
+                <th>Age Group</th>
+                <th>Intervention</th>
+                <th>Admission Time</th>
+                <th>Assigned Server</th>
+                <th>Procedure Duration</th>
+                <th>Queue Wait Time</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="campStudentsTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 3: MANUSCRIPT PLOTS GALLERY (FIGURES 1 THROUGH 9)                     -->
+    <!-- ========================================================================= -->
+    <section id="tab-manuscript-plots" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title"><i class="fas fa-chart-line" style="color:var(--primary);"></i> Manuscript Figures (CDOE 2026 Interactive Outputs)</h2>
+            <div class="card-desc">Interactive reproductions of every plot published in the manuscript. Click tabs to inspect live plots or compare with publication figures.</div>
+          </div>
+        </div>
+
+        <!-- Figure Sub-Navigation Buttons -->
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px;">
+          <button class="btn btn-outline fig-nav-btn" data-fig="fig1">Fig 1: Simulation Flowchart</button>
+          <button class="btn btn-primary fig-nav-btn active" data-fig="fig2">Fig 2: Resource Utilization</button>
+          <button class="btn btn-outline fig-nav-btn" data-fig="fig3">Fig 3: Tiers Coverage</button>
+          <button class="btn btn-outline fig-nav-btn" data-fig="fig4">Fig 4: Age-Specific Reach</button>
+          <button class="btn btn-outline fig-nav-btn" data-fig="fig5">Fig 5: DMFT Reduction</button>
+          <button class="btn btn-outline fig-nav-btn" data-fig="fig6">Fig 6: State Rankings</button>
+          <button class="btn btn-outline fig-nav-btn" data-fig="fig7">Fig 7: Structural Disparity</button>
+          <button class="btn btn-outline fig-nav-btn" data-fig="fig8">Fig 8: Scenario Heatmaps</button>
+          <button class="btn btn-outline fig-nav-btn" data-fig="fig9">Fig 9: PSA Tornado</button>
+        </div>
+
+        <!-- Figure Display Area -->
+        <div id="figDisplayContainer" class="card" style="padding:20px; background:#ffffff;">
+          <!-- Dynamically populated via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 4: SUBNATIONAL STATES EXPLORER (35 INDIAN STATES / PROVINCES)         -->
+    <!-- ========================================================================= -->
+    <section id="tab-states" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <i class="fas fa-map-marked-alt" style="color:var(--primary);"></i> Subnational Disaggregation (Table 2 & Figure 6)
+              <button class="info-btn" data-field="subnational_disparity" title="About Subnational Variation">i</button>
+            </h2>
+            <div class="card-desc">
+              Demonstrates the 200-fold interstate variation in dentist availability, students-per-dentist ratios, and coverage outcomes across 35 units.
+            </div>
+          </div>
+        </div>
+
+        <div class="table-toolbar">
+          <div class="search-input-wrap">
+            <i class="fas fa-search" style="color:var(--text-dim);"></i>
+            <input type="text" id="stateSearchInput" placeholder="Search state or province...">
+          </div>
+
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Zone:</span>
+            <select id="zoneFilterSelect" class="form-input" style="padding:5px 10px;">
+              <option value="All">All Zones (35 States & UTs)</option>
+              <option value="Northern">Northern Zone</option>
+              <option value="Southern">Southern Zone</option>
+              <option value="Eastern">Eastern Zone</option>
+              <option value="Western">Western Zone</option>
+              <option value="Central">Central Zone</option>
+              <option value="North-Eastern">North-Eastern Zone</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>State / Territory</th>
+                <th>Zone</th>
+                <th>Caries Burden (P) <button class="info-btn" data-field="caries_pool" style="width:13px; height:13px; font-size:0.5rem;">i</button></th>
+                <th>Govt Dentists <button class="info-btn" data-field="govt_dentists" style="width:13px; height:13px; font-size:0.5rem;">i</button></th>
+                <th>Students / Dentist <button class="info-btn" data-field="students_per_dentist" style="width:13px; height:13px; font-size:0.5rem;">i</button></th>
+                <th>Simulated Coverage (%) <button class="info-btn" data-field="annual_coverage" style="width:13px; height:13px; font-size:0.5rem;">i</button></th>
+                <th>PSA 95% UI <button class="info-btn" data-field="psa_uncertainty" style="width:13px; height:13px; font-size:0.5rem;">i</button></th>
+                <th>Unmet Need <button class="info-btn" data-field="unmet_need" style="width:13px; height:13px; font-size:0.5rem;">i</button></th>
+                <th>Dedicated Dentists Needed <button class="info-btn" data-field="dentists_needed" style="width:13px; height:13px; font-size:0.5rem;">i</button></th>
+              </tr>
+            </thead>
+            <tbody id="statesTableBody">
+              <!-- Dynamically populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap:18px;">
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 class="card-title" style="margin:0;">State Coverage Ranking with 95% UI (Figure 6)</h3>
+            <button class="btn btn-sm btn-outline btn-hd-download" data-chart-id="chartStatesCanvas" data-title="State Coverage Ranking with 95% UI (Figure 6)" data-subtitle="Subnational discrete event simulation across 35 States & UTs (CDOE 2026)">
+              <i class="fas fa-camera"></i> Download HD Image
+            </button>
+          </div>
+          <div style="height: 480px;">
+            <canvas id="chartStatesCanvas"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 class="card-title" style="margin:0;">Students per Dentist vs Coverage (Figure 7)</h3>
+            <button class="btn btn-sm btn-outline btn-hd-download" data-chart-id="chartScatterCanvas" data-title="Students per Dentist vs Simulated Coverage (Figure 7)" data-subtitle="Interstate structural disparity analysis (CDOE 2026)">
+              <i class="fas fa-camera"></i> Download HD Image
+            </button>
+          </div>
+          <div style="height: 480px;">
+            <canvas id="chartScatterCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 5: SCENARIO GRID & MONTE CARLO PSA (WITH DRAW SELECTOR CAP 200)       -->
+    <!-- ========================================================================= -->
+    <section id="tab-scenarios" class="tab-panel">
+      <!-- Scenario Grid Heatmap Matrix -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <i class="fas fa-th" style="color:var(--primary);"></i> National Scenario Grid Heatmap (Figure 8 & Tables A5–A13)
+              <button class="info-btn" data-field="scenario_grid" title="About Scenario Grid">i</button>
+            </h2>
+            <div class="card-desc">Annual national coverage (%) across 11 camp frequency levels × 4 task-shifting intensities.</div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Camps / Month</th>
+                <th style="text-align:center;">TS 0% (Dentist Only)</th>
+                <th style="text-align:center;">TS 10%</th>
+                <th style="text-align:center;">TS 20%</th>
+                <th style="text-align:center;">TS 30% (Headline)</th>
+              </tr>
+            </thead>
+            <tbody id="heatmapTableBody">
+              <!-- Dynamic matrix injected -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Real-Time Probabilistic Sensitivity Analysis (PSA) with User Draw Selector -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <i class="fas fa-dice" style="color:var(--primary);"></i> Probabilistic Sensitivity Analysis (PSA Monte Carlo)
+              <button class="info-btn" data-field="psa_uncertainty" title="About Monte Carlo PSA">i</button>
+            </h2>
+            <div class="card-desc">
+              Jointly samples shared clinical, workforce, and epidemiological parameters across Monte Carlo iterations.
+            </div>
+          </div>
+          <button class="btn btn-sm btn-outline btn-hd-download" data-chart-id="chartPsaCanvas" data-title="Probabilistic Sensitivity Analysis (PSA) Coverage Distribution" data-subtitle="Monte Carlo joint parameter sampling across draws (CDOE 2026)">
+            <i class="fas fa-camera"></i> Download HD Image
+          </button>
+        </div>
+
+        <!-- Monte Carlo Draws Selector (Max Cap 200) -->
+        <div style="background:#f8fafc; border:1px solid var(--border-color); border-radius:var(--radius-md); padding:14px 18px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <label style="font-size:0.84rem; font-weight:700; color:#191919;">
+              Monte Carlo Draws (Cap: 200):
+            </label>
+            <input type="number" id="inputPsaDraws" min="10" max="200" value="100" class="form-input" style="width:80px; padding:4px 8px; font-weight:700; text-align:center;">
+            <input type="range" id="sliderPsaDraws" min="10" max="200" step="10" value="100" style="width:140px;">
+
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-outline btn-sm btn-psa-chip" data-draws="25">25</button>
+              <button class="btn btn-outline btn-sm btn-psa-chip" data-draws="50">50</button>
+              <button class="btn btn-primary btn-sm btn-psa-chip" data-draws="100">100 (Default)</button>
+              <button class="btn btn-outline btn-sm btn-psa-chip" data-draws="200">200 (Max Cap)</button>
+            </div>
+          </div>
+
+          <button id="btnRunPsa" class="btn btn-primary">
+            <i class="fas fa-play"></i> Run Monte Carlo (<span id="lblRunDraws">100</span> Draws)
+          </button>
+        </div>
+
+        <!-- PSA Summary KPIs -->
+        <div class="kpi-grid" style="grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); margin-bottom:16px;">
+          <div class="kpi-card">
+            <div class="kpi-label">PSA Median Coverage</div>
+            <div id="psaMedianCov" class="kpi-value">13.3%</div>
+            <div class="kpi-subtext">50th percentile</div>
+          </div>
+          <div class="kpi-card green">
+            <div class="kpi-label">95% Uncertainty Interval</div>
+            <div id="psaUiInterval" class="kpi-value">[6.9% - 24.5%]</div>
+            <div class="kpi-subtext">2.5th to 97.5th percentile</div>
+          </div>
+          <div class="kpi-card amber">
+            <div class="kpi-label">P(Coverage &lt; 10%)</div>
+            <div id="psaProbBelow10" class="kpi-value">22.7%</div>
+            <div class="kpi-subtext">Risk of low coverage</div>
+          </div>
+          <div class="kpi-card rose">
+            <div class="kpi-label">P(Coverage &lt; 25%)</div>
+            <div id="psaProbBelow25" class="kpi-value">97.3%</div>
+            <div class="kpi-subtext">National deficit likelihood</div>
+          </div>
+        </div>
+
+        <div style="height: 270px;">
+          <canvas id="chartPsaCanvas"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 6: CUSTOM COUNTRY MODELER & GLOBAL EXPLORER                            -->
+    <!-- ========================================================================= -->
+    <section id="tab-custom-country" class="tab-panel">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <i class="fas fa-globe" style="color:var(--primary);"></i> Custom Country Configuration & Triage Setup
+              <button class="info-btn" data-field="custom_country_guide" title="Custom Country Help">i</button>
+            </h2>
+            <div class="card-desc">
+              Adapt the discrete event simulation logic to any country, health district, or global region.
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button id="btnCustomDownloadTemplate" class="btn btn-outline" title="Download Excel input template (.xlsx)">
+              <i class="fas fa-file-download"></i> Download Template (.xlsx)
+            </button>
+            <label class="btn btn-outline" style="cursor:pointer; margin:0;" title="Upload custom country/state input file (.xlsx, .csv, .json)">
+              <i class="fas fa-file-upload"></i> Upload Template (.xlsx/.csv)
+              <input type="file" id="fileCustomUploadTemplate" accept=".xlsx, .xls, .csv, .json" style="display:none;">
+            </label>
+            <button id="btnCustomExportResults" class="btn btn-primary" title="Export full DES simulation results to Excel (.xlsx)">
+              <i class="fas fa-file-excel"></i> Export Results (.xlsx)
+            </button>
+            <button id="btnExportCountry" class="btn btn-outline" title="Export JSON configuration">
+              <i class="fas fa-download"></i> JSON
+            </button>
+            <label class="btn btn-outline" style="cursor:pointer; margin:0;" title="Import JSON configuration">
+              <i class="fas fa-upload"></i> JSON
+              <input type="file" id="fileImportCountry" accept=".json" style="display:none;">
+            </label>
+          </div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <div style="font-size:0.8rem; font-weight:700; color:var(--text-muted); margin-bottom:8px;">
+            Load Global Archetype Preset:
+            <button class="info-btn" data-field="global_archetypes" title="About Global Archetypes">i</button>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <button class="btn btn-outline btn-preset" data-preset="low-income">
+              <i class="fas fa-landmark"></i> Low-Income (Severe Shortage)
+            </button>
+            <button class="btn btn-outline btn-preset" data-preset="lower-middle">
+              <i class="fas fa-city"></i> Lower-Middle Income
+            </button>
+            <button class="btn btn-outline btn-preset" data-preset="upper-middle">
+              <i class="fas fa-building"></i> Upper-Middle Income
+            </button>
+            <button class="btn btn-outline btn-preset" data-preset="high-income">
+              <i class="fas fa-hospital"></i> Universal Screening Model
+            </button>
+          </div>
+        </div>
+
+        <form id="formCustomCountry">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">
+                Country / System Name
+                <button type="button" class="info-btn" data-field="input_country_name">i</button>
+              </label>
+              <input type="text" id="inputCountryName" class="form-input" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                Currency Symbol / Code
+                <button type="button" class="info-btn" data-field="input_currency">i</button>
+              </label>
+              <input type="text" id="inputCountryCurrency" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                Public / School Dental Surgeons
+                <button type="button" class="info-btn" data-field="input_dentists">i</button>
+              </label>
+              <input type="number" id="inputDentists" class="form-input" required min="1">
+            </div>
+          </div>
+
+          <h4 style="margin:20px 0 10px; font-size:0.92rem; font-weight:700;">
+            Target Student Enrolment by Age Group
+            <button type="button" class="info-btn" data-field="input_student_enrolment">i</button>
+          </h4>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Primary (6 to 8 years)</label>
+              <input type="number" id="inputPop6_8" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Upper Primary (9 to 11 years)</label>
+              <input type="number" id="inputPop9_11" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Secondary (12 to 15 years)</label>
+              <input type="number" id="inputPop12_15" class="form-input" required>
+            </div>
+          </div>
+
+          <h4 style="margin:20px 0 10px; font-size:0.92rem; font-weight:700;">
+            Baseline Caries Prevalence (%)
+            <button type="button" class="info-btn" data-field="input_caries_prev">i</button>
+          </h4>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Prevalence: 6 to 8 years (%)</label>
+              <input type="number" id="inputPrev6_8" class="form-input" step="0.1" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Prevalence: 9 to 11 years (%)</label>
+              <input type="number" id="inputPrev9_11" class="form-input" step="0.1" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Prevalence: 12 to 15 years (%)</label>
+              <input type="number" id="inputPrev12_15" class="form-input" step="0.1" required>
+            </div>
+          </div>
+
+          <div style="margin-top:22px; display:flex; justify-content:flex-end;">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-check"></i> Save & Run Custom Simulation
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom:12px;">
+          <i class="fas fa-cubes" style="color:var(--primary);"></i> Subnational Provinces / Districts
+          <button class="info-btn" data-field="custom_provinces">i</button>
+        </h3>
+        <div id="provincesListWrap">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 7: METHODOLOGY & EQUATIONS                                            -->
+    <!-- ========================================================================= -->
+    <section id="tab-docs" class="tab-panel">
+      <div class="card">
+        <h2 class="card-title"><i class="fas fa-square-root-alt" style="color:var(--primary);"></i> Mathematical Formulation & Simulation Mechanics</h2>
+        <div class="card-desc" style="margin-bottom:16px;">
+          Faithfully reproduces the discrete event simulation logic detailed in the manuscript and Annexure A.
+        </div>
+
+        <h4 style="color:var(--primary); margin-top:14px; font-size:0.92rem;">1. Camp Queuing Logic (Lindley Recursion)</h4>
+        <p style="font-size:0.83rem; color:var(--text-muted);">
+          Each camp is an 8-hour shift (480 minutes). Students arrive as a batch of size <em>N ~ Ceil(U(8,12)) × (1 + TS%)</em>.
+          The auxiliary admits each student in FIFO order:
+        </p>
+        <div class="math-block">
+          A_done[j] = ∑ adm[k], &nbsp; with adm ~ Uniform(0.5, 1.5) minutes
+        </div>
+        <p style="font-size:0.83rem; color:var(--text-muted);">
+          For any server <em>r ∈ {dentist, auxiliary, teacher}</em>, student <em>j</em> starts service at:
+        </p>
+        <div class="math-block">
+          Start[j] = max(Ready[j], Free_Time[r]), &nbsp; Served if Start[j] &lt; 480 min
+        </div>
+
+        <h4 style="color:var(--primary); margin-top:16px; font-size:0.92rem;">2. 10-Month School-Year Layer & Pool Depletion</h4>
+        <p style="font-size:0.83rem; color:var(--text-muted);">
+          In months <em>t = 2...10</em>, repeat visits consume a share <em>ρ</em> (base 15%):
+        </p>
+        <div class="math-block">
+          Rep[g] = min(ρ × S[g], U[g]), &emsp; New[g] = min(S[g] - Rep[g], P[g] - U[g])
+        </div>
+
+        <h4 style="color:var(--primary); margin-top:16px; font-size:0.92rem;">3. Health Outcomes: Years Lived with Disability (YLDs)</h4>
+        <div class="math-block">
+          YLD_dur = ∑ Eff_New[g, i] × DW[i] × [ (1 - e^(-0.03 × dur[i])) / 0.03 ]
+        </div>
+
+        <h4 style="color:var(--primary); margin-top:16px; font-size:0.92rem;">4. Dedicated School Workforce Gap</h4>
+        <div class="math-block">
+          Dedicated_Dentists_Needed = Unmet_Need / 1,889
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- How to Use Guide Modal -->
+  <div id="howToUseModal" class="modal-overlay">
+    <div class="modal-dialog modal-dialog-wide">
+      <button class="modal-close-btn">&times;</button>
+      
+      <div class="explainer-header">
+        <div class="explainer-icon"><i class="fas fa-book-reader"></i></div>
+        <div>
+          <h2 class="explainer-title">How to Use the Dental Caries DES Platform</h2>
+          <span style="font-size:0.8rem; color:var(--text-muted)">Step-by-step interactive manual & system guide</span>
+        </div>
+      </div>
+
+      <div class="guide-step-card">
+        <div class="guide-step-num">1</div>
+        <div class="guide-step-content">
+          <h4>Understanding the Core Simulation Engine</h4>
+          <p>
+            This application simulates school-based dental camps using <strong>Discrete Event Simulation (DES)</strong> with the <strong>Lindley recursion</strong>.
+            Unlike static spreadsheets, it explicitly models individual student queues, stochastic arrival batches, auxiliary triage, procedure durations, and a strict 480-minute (8-hour) daily shift cut-off.
+          </p>
+        </div>
+      </div>
+
+      <div class="guide-step-card">
+        <div class="guide-step-num">2</div>
+        <div class="guide-step-content">
+          <h4>Exploring the 4 Feasibility Tiers (Executive Dashboard)</h4>
+          <p>
+            On the <strong>Executive Dashboard</strong>, click between the 4 feasibility tiers:
+            <strong>Status Quo</strong> (2 camps/mo, TS 0%), <strong>Plausible</strong> (8 camps/mo, TS 30% — headline target), <strong>Stretch</strong> (12 camps/mo, TS 30%, φ=0.8), and <strong>Theoretical Max</strong> (22 camps/mo, φ=1.0).
+            Observe how coverage, unmet need, and dentist utilization update immediately.
+          </p>
+        </div>
+      </div>
+
+      <div class="guide-step-card">
+        <div class="guide-step-num">3</div>
+        <div class="guide-step-content">
+          <h4>Interactive Camp Simulation with Animation & Speed Controls</h4>
+          <p>
+            Go to <strong>Camp DES & Timeline</strong> and click <strong>Start Animation</strong>. Use the speed controls (0.5x, 1x, 2x, 5x) to watch the digital camp clock advance from 09:00 AM to 05:00 PM.
+            Watch students arrive, undergo auxiliary admission, get triaged, and receive treatment across separate non-overlapping tracks for Dentist, Auxiliary Admissions, Auxiliary Fluoride, and Teacher.
+          </p>
+        </div>
+      </div>
+
+      <div class="guide-step-card">
+        <div class="guide-step-num">4</div>
+        <div class="guide-step-content">
+          <h4>Viewing All 9 Manuscript Plots (Manuscript Plots Tab)</h4>
+          <p>
+            Visit the <strong>Manuscript Plots (Fig 1–9)</strong> tab to view interactive Chart.js reproductions of all 9 figures from the paper, including Resource Utilization (Fig 2), Feasibility Tiers (Fig 3), Age-Specific Reach (Fig 4), DMFT Reduction (Fig 5), State Rankings (Fig 6), Structural Disparities (Fig 7), Scenario Heatmaps (Fig 8), and PSA Tornado (Fig 9).
+          </p>
+        </div>
+      </div>
+
+      <div class="guide-step-card">
+        <div class="guide-step-num">5</div>
+        <div class="guide-step-content">
+          <h4>Configuring Monte Carlo PSA Draws (Max Cap 200)</h4>
+          <p>
+            In the <strong>Scenario Grid & PSA</strong> tab, select the number of Monte Carlo draws using the number input, slider, or quick chips (25, 50, 100, 200). The simulation enforces a maximum cap of 200 draws for responsive in-browser performance.
+          </p>
+        </div>
+      </div>
+
+      <div class="guide-step-card">
+        <div class="guide-step-num">6</div>
+        <div class="guide-step-content">
+          <h4>Using the 'i' Field Information Buttons</h4>
+          <p>
+            Click any circular <span class="info-btn" style="display:inline-flex; width:16px; height:16px; font-size:0.6rem; vertical-align:middle;">i</span> button next to any KPI, parameter slider, or table header to view its clinical definition, mathematical formula, baseline benchmark, and paper citation.
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top:20px; display:flex; justify-content:flex-end;">
+        <button class="btn btn-primary modal-close-btn-action">
+          <i class="fas fa-check"></i> Got It, Let's Explore!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Field Explainer Modal -->
+  <div id="fieldExplainerModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <button class="modal-close-btn">&times;</button>
+      
+      <div class="explainer-header">
+        <div class="explainer-icon"><i class="fas fa-info"></i></div>
+        <div>
+          <div id="explainerBadge" class="explainer-badge">METRIC EXPLANATION</div>
+          <h3 id="explainerTitle" class="explainer-title" style="margin-top:2px;">Field Title</h3>
+        </div>
+      </div>
+
+      <div id="explainerBody" style="font-size:0.86rem; color:var(--text-main); line-height:1.55;">
+        <!-- Injected via JavaScript -->
+      </div>
+
+      <div style="margin-top:20px; display:flex; justify-content:flex-end;">
+        <button class="btn btn-primary modal-close-btn-action">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Inspection Modal Dialog -->
+  <div id="studentModal" class="modal-overlay">
+    <div class="modal-dialog">
+      <button class="modal-close-btn">&times;</button>
+      <div id="studentModalDetails">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Libraries & Core Scripts -->
+  <script src="xlsx.full.min.js"></script>
+  <script src="html2canvas.min.js"></script>
+  <script src="data.js"></script>
+  <script src="simulation.js"></script>
+  <script src="exporter.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>

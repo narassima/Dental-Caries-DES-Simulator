@@ -7,7 +7,7 @@
  * 4. High-Definition (HD 300 DPI) Chart & Element Image Exporter
  * 
  * Powered by SheetJS (xlsx.full.min.js), html2canvas, and HTML5 Canvas API
- * Based on research: Community Dentistry and Oral Epidemiology (CDOE 2026)
+ * Discrete Event Simulation Model for School-Based Oral Health
  */
 
 (function (window) {
@@ -30,23 +30,23 @@
       // SHEET 1: Country_Parameters
       // -----------------------------------------------------------------------
       const paramData = [
-        ['Parameter_Key', 'Parameter_Name', 'Value', 'Unit', 'Recommended_Range', 'Description_and_Guidance', 'CDOE_2026_Reference'],
-        ['country_name', 'Country / Health Jurisdiction Name', 'India (National Baseline)', 'Text', 'e.g. India, Kenya, Brazil, Universal', 'Official name of the modeled country or province', 'CDOE 2026 § Methods'],
-        ['currency_code', 'Local Currency Symbol', 'INR (₹)', 'Currency', 'e.g. $, ₹, €, £, ₦', 'Currency symbol used in economic benchmarking', 'CDOE 2026 Table 1'],
+        ['Parameter_Key', 'Parameter_Name', 'Value', 'Unit', 'Recommended_Range', 'Description_and_Guidance', 'Model_Reference'],
+        ['country_name', 'Country / Health Jurisdiction Name', 'India (National Baseline)', 'Text', 'e.g. India, Kenya, Brazil, Universal', 'Official name of the modeled country or province', 'Methods & Architecture'],
+        ['currency_code', 'Local Currency Symbol', 'INR (₹)', 'Currency', 'e.g. $, ₹, €, £, ₦', 'Currency symbol used in economic benchmarking', 'Baseline Model Table 1'],
         ['enrol_6_8', 'School Enrolment 6–8y (Primary)', 38200000, 'Students', '1,000 to 100,000,000', 'Target government/public school population in primary grades (classes 1–3)', 'UDISE+ 2024–25; Table A1'],
         ['enrol_9_11', 'School Enrolment 9–11y (Upper Primary)', 44100000, 'Students', '1,000 to 100,000,000', 'Target government/public school population in upper primary grades (classes 4–6)', 'UDISE+ 2024–25; Table A1'],
         ['enrol_12_15', 'School Enrolment 12–15y (Secondary)', 48600000, 'Students', '1,000 to 100,000,000', 'Target government/public school population in secondary grades (classes 7–10)', 'UDISE+ 2024–25; Table A1'],
         ['dentists_public', 'Public Sector Dental Surgeons', 8543, 'FTE Dentists', '10 to 50,000', 'Total government dental surgeons available for public health and school programs', 'National Health Profile 2022; Table 2'],
-        ['auxiliaries_per_dentist', 'Auxiliaries per Dentist Ratio', 2.0, 'Ratio', '1.0 to 4.0', 'Trained dental hygienists, nurses, or ASHA workers deployed per dentist camp', 'CDOE 2026 Task-Shifting Model'],
-        ['teachers_per_school', 'Teachers Trained per School', 1.0, 'Ratio', '1.0 to 3.0', 'Designated school teachers trained in oral health education & referral logistics', 'Ayushman Bharat SHWP / CDOE 2026'],
+        ['auxiliaries_per_dentist', 'Auxiliaries per Dentist Ratio', 2.0, 'Ratio', '1.0 to 4.0', 'Trained dental hygienists, nurses, or ASHA workers deployed per dentist camp', 'Task-Shifting Model'],
+        ['teachers_per_school', 'Teachers Trained per School', 1.0, 'Ratio', '1.0 to 3.0', 'Designated school teachers trained in oral health education & referral logistics', 'Ayushman Bharat SHWP Guidelines'],
         ['prev_6_8', 'Caries Prevalence 6–8y (Primary)', 0.52, 'Proportion (0–1)', '0.10 to 0.90 (or 10% to 90%)', 'Untreated dental caries prevalence in primary dentition', 'Janakiram et al. 2020; Table 2'],
         ['prev_9_11', 'Caries Prevalence 9–11y (Upper Primary)', 0.55, 'Proportion (0–1)', '0.10 to 0.90 (or 10% to 90%)', 'Untreated dental caries prevalence in mixed dentition', 'Janakiram / Pandey 2021; Table 2'],
         ['prev_12_15', 'Caries Prevalence 12–15y (Secondary)', 0.60, 'Proportion (0–1)', '0.10 to 0.90 (or 10% to 90%)', 'Untreated dental caries prevalence in permanent dentition', 'Pandey et al. 2021; Table 2'],
         ['mean_dmft', 'Mean DMFT Index', 2.40, 'DMFT (0–32)', '0.5 to 8.0', 'Mean Decayed, Missing, and Filled Teeth in children with active caries', 'National Oral Health Survey; Table 1'],
-        ['camps_per_month', 'Operational Camps / Dentist / Month', 8, 'Camps/mo', '2 to 22 (2=Status quo, 8=Plausible, 22=Daily)', 'Operational intensity of school visits per government dentist', 'CDOE 2026 Table 1 Feasibility Tiers'],
-        ['task_shifting_level', 'Task-Shifting Delegation Level (%)', 30, 'Percentage (0–30)', '0, 10, 20, or 30%', 'Percentage of treatments delegated to auxiliaries (FV) & teachers (OHE)', 'CDOE 2026 Table 1 Headline Scenario'],
-        ['dentist_participation_phi', 'Workforce Participation Rate (phi)', 0.50, 'Proportion (0–1)', '0.30 to 1.00', 'Fraction of rostered public dentists actively participating in school camps', 'CDOE 2026 Scenario S8; PSA parameter'],
-        ['daily_camp_hours', 'Daily Camp Duration', 8.0, 'Hours', '4.0 to 8.0', 'Total daily working shift duration (480 minutes Lindley Queue)', 'CDOE 2026 Methods § Simulation Setup'],
+        ['camps_per_month', 'Operational Camps / Dentist / Month', 8, 'Camps/mo', '2 to 22 (2=Status quo, 8=Plausible, 22=Daily)', 'Operational intensity of school visits per government dentist', 'Feasibility Tiers Model'],
+        ['task_shifting_level', 'Task-Shifting Delegation Level (%)', 30, 'Percentage (0–30)', '0, 10, 20, or 30%', 'Percentage of treatments delegated to auxiliaries (FV) & teachers (OHE)', 'Headline Scenario Model'],
+        ['dentist_participation_phi', 'Workforce Participation Rate (phi)', 0.50, 'Proportion (0–1)', '0.30 to 1.00', 'Fraction of rostered public dentists actively participating in school camps', 'Policy Scenario S8; PSA parameter'],
+        ['daily_camp_hours', 'Daily Camp Duration', 8.0, 'Hours', '4.0 to 8.0', 'Total daily working shift duration (480 minutes Lindley Queue)', 'Methods § Simulation Setup'],
         ['school_days_per_year', 'School Operational Days / Year', 220, 'Days', '180 to 250', 'Number of working school days available annually for camp scheduling', 'Academic Calendar']
       ];
 
@@ -122,7 +122,7 @@
       // -----------------------------------------------------------------------
       const guideData = [
         ['DENTAL CARIES DISCRETE EVENT SIMULATION (DES) PLATFORM — INPUT TEMPLATE GUIDE'],
-        ['Published in: Community Dentistry and Oral Epidemiology (CDOE 2026)'],
+        ['Discrete Event Simulation Model for School-Based Oral Health'],
         [''],
         ['HOW TO USE THIS TEMPLATE:'],
         ['1. Open this file in Microsoft Excel, Google Sheets, or Apple Numbers.'],
@@ -135,7 +135,7 @@
         ['• Student Enrolment: Target age groups: Primary (6–8y), Upper Primary (9–11y), Secondary (12–15y). If only total is known, split as 35% / 33% / 32%.'],
         ['• Public Dentists: Active government dental surgeons rostered for public service or school health visits.'],
         ['• Caries Prevalence: Sourced from national oral health surveys or WHO Country Profiles (enter as decimal 0.52 or percentage 52%).'],
-        ['• Task-Shifting: CDOE 2026 evaluates 0% (dentist only), 10%, 20%, and 30% (delegation of fluoride varnish to auxiliaries and oral hygiene education to teachers).'],
+        ['• Task-Shifting: Evaluates 0% (dentist only), 10%, 20%, and 30% (delegation of fluoride varnish to auxiliaries and oral hygiene education to teachers).'],
         ['• Workforce Participation (phi): Share of public dental workforce actively participating in mobile school camps (baseline: 0.50).']
       ];
       const wsGuide = XLSX.utils.aoa_to_sheet(guideData);
@@ -317,7 +317,7 @@
       // -----------------------------------------------------------------------
       const execSummary = [
         ['DENTAL CARIES DISCRETE EVENT SIMULATION (DES) — MODEL OUTPUT REPORT'],
-        ['Citation: Optimising school-based dental caries prevention through task-shifting (CDOE 2026)'],
+        ['Title: Optimising school-based dental caries prevention through task-shifting'],
         ['Export Timestamp:', timeStr],
         ['Model Country / Scope:', countryName],
         ['Active Feasibility Tier:', state.tier],
@@ -656,7 +656,7 @@
 
           ctx.fillStyle = '#64748b';
           ctx.font = '20px Inter, system-ui, sans-serif';
-          ctx.fillText(subtitle || 'Community Dentistry and Oral Epidemiology (CDOE 2026) | Discrete Event Simulation Platform', 70, 115);
+          ctx.fillText(subtitle || 'Discrete Event Simulation Platform', 70, 115);
 
           // Subtle divider line
           ctx.strokeStyle = '#0a66c2';
@@ -685,7 +685,7 @@
             // Footer attribution watermark
             ctx.fillStyle = '#94a3b8';
             ctx.font = '18px Inter, system-ui, sans-serif';
-            ctx.fillText('Source: CDOE 2026 Discrete Event Simulation Model • High-Definition Publication Export', 70, exportHeight - 40);
+            ctx.fillText('Source: Discrete Event Simulation Model • High-Definition Publication Export', 70, exportHeight - 40);
 
             const timestamp = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             ctx.textAlign = 'right';
@@ -731,14 +731,14 @@
 
           ctx.fillStyle = '#64748b';
           ctx.font = '20px Inter, sans-serif';
-          ctx.fillText(subtitle || 'Community Dentistry and Oral Epidemiology (CDOE 2026)', 50, 90);
+          ctx.fillText(subtitle || 'Discrete Event Simulation Platform', 50, 90);
 
           ctx.drawImage(canvas, 0, 110);
 
           // Footer
           ctx.fillStyle = '#94a3b8';
           ctx.font = '18px Inter, sans-serif';
-          ctx.fillText('Dental Caries DES Platform | CDOE 2026 • 300 DPI Export', 50, exportH - 25);
+          ctx.fillText('Dental Caries DES Platform • 300 DPI Export', 50, exportH - 25);
 
           const link = document.createElement('a');
           link.download = (filename || 'element_export_hd') + '.png';

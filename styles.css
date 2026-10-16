@@ -444,12 +444,27 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 3px;
 }
 
-/* KPI Banner Grid */
+/* KPI Banner Grid - Balanced 6-Column Responsive Layout */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
   margin-bottom: 20px;
+}
+@media (max-width: 1280px) {
+  .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .kpi-card {
@@ -1723,3 +1738,627 @@ table.data-table tr:hover td {
   color: var(--primary);
   margin-top: 2px;
 }
+
+/* ==========================================================================
+   NATIONAL POLICY OVERVIEW BANNER (PLAIN ENGLISH FOR CLINICIANS & POLICYMAKERS)
+   ========================================================================== */
+.executive-policy-banner {
+  background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+  border: 1px solid #bfdbfe;
+  border-left: 5px solid var(--primary);
+  border-radius: var(--radius-lg);
+  padding: 18px 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(10, 102, 194, 0.06);
+}
+
+.policy-banner-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.policy-banner-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.policy-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--primary);
+  background: #dbeafe;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.tier-badge-pill {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1e293b;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+.policy-live-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #059669;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+}
+
+.policy-briefing-body {
+  margin-bottom: 16px;
+}
+
+.policy-briefing-text {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #1e293b;
+  font-weight: 450;
+}
+
+.policy-briefing-text strong {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.policy-key-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+}
+
+.policy-highlight-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.highlight-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.highlight-icon.blue { background: #dbeafe; color: #1d4ed8; }
+.highlight-icon.green { background: #d1fae5; color: #047857; }
+.highlight-icon.purple { background: #ede9fe; color: #6d28d9; }
+.highlight-icon.amber { background: #fef3c7; color: #b45309; }
+
+.highlight-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.highlight-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.highlight-val {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 2px;
+}
+
+/* Control sublabel */
+.control-sublabel {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+  margin-bottom: 2px;
+}
+
+/* ==========================================================================
+   DYNAMIC CLINICAL WORKFLOW & BOTTLENECK ALERT (FOR DENTISTS & DOCTORS)
+   ========================================================================== */
+.clinic-alert-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  border: 1px solid transparent;
+  transition: var(--transition);
+}
+
+.clinic-alert-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.clinic-alert-content {
+  flex: 1;
+}
+
+.clinic-alert-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.clinic-alert-text {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: inherit;
+  opacity: 0.95;
+}
+
+.clinic-alert-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+/* Three Alert States */
+.clinic-alert-box.clinic-alert-success {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #14532d;
+}
+.clinic-alert-box.clinic-alert-success .clinic-alert-icon { color: #16a34a; }
+.clinic-alert-box.clinic-alert-success .clinic-alert-badge {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.clinic-alert-box.clinic-alert-warning {
+  background: #fffbeb;
+  border-color: #fde68a;
+  color: #78350f;
+}
+.clinic-alert-box.clinic-alert-warning .clinic-alert-icon { color: #d97706; }
+.clinic-alert-box.clinic-alert-warning .clinic-alert-badge {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fcd34d;
+}
+
+.clinic-alert-box.clinic-alert-info {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1e3a8a;
+}
+.clinic-alert-box.clinic-alert-info .clinic-alert-icon { color: #2563eb; }
+.clinic-alert-box.clinic-alert-info .clinic-alert-badge {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 1px solid #93c5fd;
+}
+
+/* ==========================================================================
+   COMPREHENSIVE HOW TO USE GUIDE STYLES
+   ========================================================================== */
+.guide-nav-bar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 4px 12px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  z-index: 10;
+  scrollbar-width: thin;
+}
+
+.guide-nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid #e2e8f0;
+  white-space: nowrap;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.guide-nav-pill:hover, .guide-nav-pill.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 2px 4px rgba(10, 102, 194, 0.2);
+}
+
+.guide-section {
+  margin-bottom: 28px;
+  scroll-margin-top: 60px;
+}
+
+.guide-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  border: 1px solid var(--border-color);
+  border-left: 5px solid var(--primary);
+  border-radius: var(--radius-md);
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.guide-section-header h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.guide-section-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background: var(--pastel-blue-bg);
+  color: var(--primary);
+  border: 1px solid var(--pastel-blue-border);
+}
+
+.guide-card-inner {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  margin-bottom: 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.guide-card-inner h4 {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.guide-card-inner p {
+  font-size: 0.84rem;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.guide-card-inner ul, .guide-card-inner ol {
+  padding-left: 20px;
+  font-size: 0.83rem;
+  color: #334155;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.guide-card-inner li {
+  margin-bottom: 6px;
+}
+
+.guide-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.guide-kpi-item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+
+.guide-kpi-item-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.guide-kpi-item-desc {
+  font-size: 0.78rem;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.guide-kpi-item-math {
+  font-size: 0.73rem;
+  font-family: monospace;
+  color: var(--primary);
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 8px;
+}
+
+.guide-action-box {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin: 12px 0;
+}
+
+.guide-action-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #166534;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.guide-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: #e2e8f0;
+  color: #334155;
+  margin: 2px 4px 2px 0;
+}
+
+/* ==========================================================================
+   Visual De-cluttering & Usability Optimization Elements
+   ========================================================================== */
+
+/* 1. Segmented Sub-Navigation Bar (Tab 2 Multi-View Architecture) */
+.subnav-segmented-tabs {
+  display: flex;
+  gap: 6px;
+  background: #f1f5f9;
+  padding: 6px;
+  border-radius: var(--radius-md);
+  margin: 18px 0 16px 0;
+  border: 1px solid var(--border-color);
+}
+
+.subnav-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #475569;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.subnav-btn:hover {
+  color: var(--primary);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.subnav-btn.active {
+  color: var(--primary);
+  background: #ffffff;
+  font-weight: 700;
+  border-color: #cbd5e1;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.subnav-btn .subnav-count-badge {
+  font-size: 0.72rem;
+  background: #e2e8f0;
+  color: #334155;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+}
+
+.subnav-btn.active .subnav-count-badge {
+  background: var(--pastel-blue-bg);
+  color: var(--primary);
+}
+
+/* 2. Collapsible Camp Sliders Drawer */
+.camp-sliders-panel {
+  background: #f8fafc;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  margin-top: 14px;
+  padding: 12px 16px;
+  transition: all 0.2s ease;
+}
+
+.camp-sliders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.collapsible-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-main);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+
+.collapsible-toggle-btn:hover {
+  background: #edf2f7;
+  color: var(--primary);
+}
+
+.collapsible-toggle-btn .toggle-icon {
+  font-size: 0.75rem;
+  transition: transform 0.25s ease;
+  color: var(--text-muted);
+}
+
+.camp-sliders-panel.collapsed .camp-sliders-body {
+  display: none !important;
+}
+
+.camp-sliders-panel.collapsed .toggle-icon {
+  transform: rotate(-90deg);
+}
+
+.camp-sliders-panel.collapsed {
+  padding: 10px 16px;
+  background: #fdfdfd;
+}
+
+/* 3. Quick-Click Zonal Filter Pills for Subnational Disaggregation (Tab 4) */
+.zonal-pills-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--border-subtle);
+}
+
+.zonal-pill-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 4px;
+}
+
+.zonal-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 4px 11px;
+  border-radius: var(--radius-full);
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.zonal-pill:hover {
+  background: #e2e8f0;
+  color: var(--text-main);
+}
+
+.zonal-pill.active {
+  background: var(--pastel-blue-bg);
+  color: var(--primary);
+  border-color: var(--pastel-blue-border);
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgba(10, 102, 194, 0.1);
+}
+
+.zonal-pill .pill-badge {
+  font-size: 0.7rem;
+  background: rgba(0, 0, 0, 0.08);
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+.zonal-pill.active .pill-badge {
+  background: rgba(10, 102, 194, 0.2);
+  color: var(--primary);
+}
+
+/* 4. Table Scroll Container with Sticky Headers */
+.table-scroll-container {
+  max-height: 460px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+}
+
+.table-scroll-container .data-table thead th {
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  z-index: 2;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* 5. Clean Heatmap Matrix Styling (Tab 5) */
+#heatmapTableBody td {
+  transition: background-color 0.15s ease;
+}
+
+#heatmapTableBody tr:hover td {
+  filter: brightness(0.97);
+}
+
+
+

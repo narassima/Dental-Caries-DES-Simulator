@@ -2,7 +2,7 @@
 
 **Optimising School-Based Dental Caries Prevention Through Task-Shifting: A State-Level Discrete Event Simulation Across India & Global Modeler**
 
-Based on the research paper (*Community Dentistry and Oral Epidemiology*, CDOE 2026 / Great Lakes Institute of Management & Collaborators).
+Based on the research paper (*Great Lakes Institute of Management & Collaborators*).
 
 ---
 
@@ -144,7 +144,7 @@ dental-caries-des-app/
    - **Scenario Grid & PSA**: 11×4 sensitivity matrix and Monte Carlo parameter Spearman rank correlation rankings.
 4. **High-Definition (HD 300 DPI) Chart Images**:
    - Every Chart.js graph and the 4-track Gantt timeline include a **"Download HD Image"** button.
-   - Generates 2400×1400 px crisp publication-quality PNGs with solid white background, institutional title banners, and CDOE 2026 citation watermarks.
+   - Generates 2400×1400 px crisp publication-quality PNGs with solid white background, institutional title banners, and publication citation watermarks.
 
 ---
 
@@ -153,5 +153,4 @@ dental-caries-des-app/
 If you use this model or simulation tool in academic work or policy analysis, please cite:
 
 > **"Optimising school-based dental caries prevention through task-shifting: a state-level discrete event simulation across India"**  
-> *Community Dentistry and Oral Epidemiology (CDOE)*, 2026.  
 > Great Lakes Institute of Management & Collaborating Dental Public Health Institutions.

@@ -1,7 +1,7 @@
 /**
  * Dental Caries Discrete Event Simulation (DES) Engine
  * Based on: "Optimising school-based dental caries prevention through task-shifting:
- * a state-level discrete event simulation across India" (CDOE 2026)
+ * a state-level discrete event simulation across India"
  *
  * Implements:
  * 1. Lindley recursion FIFO queueing with explicit dentist, auxiliary, and teacher resources

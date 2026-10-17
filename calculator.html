@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dental Health & Workforce Calculator | Discrete Event Simulation</title>
+  <meta name="description" content="Calculate the national health impact, population coverage, and workforce requirements for school-based dental caries programs using discrete event simulation.">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Core Calculator Stylesheet -->
+  <link rel="stylesheet" href="calculator.css?v=1.0">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="calc-body">
+
+  <!-- ========================================================================= -->
+  <!-- TOP NAVIGATION HEADER                                                     -->
+  <!-- ========================================================================= -->
+  <header class="calc-header">
+    <div class="calc-header-inner">
+      <a href="calculator.html" class="calc-brand">
+        <div class="calc-brand-icon">
+          <i class="fas fa-tooth"></i>
+        </div>
+        <div>
+          <h1 class="calc-brand-title">Dental Health & Workforce Calculator</h1>
+          <div class="calc-brand-sub">Discrete Event Simulation Model for School-Based Oral Health</div>
+        </div>
+      </a>
+
+      <div class="calc-nav-links">
+        <button id="btnOpenGuideNav" class="calc-nav-btn" type="button" title="View detailed step-by-step user guide">
+          <i class="fas fa-book-reader" style="color:var(--calc-primary);"></i> How to Get Started
+        </button>
+
+        <button id="btnDownloadTemplateNav" class="calc-nav-btn" type="button" title="Download Excel input template (.xlsx) for custom country parameters">
+          <i class="fas fa-file-download" style="color:#057642;"></i> Download Template (.xlsx)
+        </button>
+
+        <button id="btnUploadModalNav" class="calc-nav-btn" type="button" title="Upload country data file (.xlsx, .csv, .json)">
+          <i class="fas fa-file-upload" style="color:#b45309;"></i> Upload Country Data
+        </button>
+
+        <button id="btnExportResultsNav" class="calc-nav-btn" type="button" title="Export simulation results to Excel (.xlsx)">
+          <i class="fas fa-file-excel" style="color:#057642;"></i> Export Results
+        </button>
+
+        <a href="index.html" class="calc-nav-btn primary" title="Switch to Advanced Research Suite with full 2D visualizer, state table, and figures">
+          <i class="fas fa-microscope"></i> Full Research Suite
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN CALCULATOR WORKSPACE (TWO-COLUMN SPLIT LAYOUT)                       -->
+  <!-- ========================================================================= -->
+  <main class="calc-main-container">
+
+    <!-- Active Country & Jurisdiction Banner -->
+    <div id="countryBanner" class="calc-card" style="padding:10px 18px; margin-bottom:12px; background:#ffffff; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div style="width:36px; height:36px; border-radius:50%; background:var(--calc-primary-soft); color:var(--calc-primary); display:flex; align-items:center; justify-content:center; font-size:1.1rem;">
+          <i class="fas fa-globe"></i>
+        </div>
+        <div>
+          <div style="font-size:0.75rem; font-weight:700; color:var(--calc-text-muted); text-transform:uppercase; letter-spacing:0.5px;">Active Jurisdiction Model</div>
+          <div id="lblActiveCountry" style="font-size:1.05rem; font-weight:700; color:#0f172a;">India (National Baseline & 35 States)</div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span id="badgeActiveTier" class="calc-badge calc-badge-blue" style="font-size:0.8rem; padding:4px 10px;">
+          Plausible Tier (8 camps/mo, 30% Team Delegation)
+        </span>
+        <button id="btnTriggerUploadPopup" class="calc-nav-btn" style="padding:5px 12px; font-size:0.78rem;">
+          <i class="fas fa-exchange-alt"></i> Change Country
+        </button>
+      </div>
+    </div>
+
+    <div class="calc-layout-grid">
+
+      <!-- ===================================================================== -->
+      <!-- LEFT COLUMN: INPUT PARAMETERS & POLICY SCENARIO FORM                  -->
+      <!-- ===================================================================== -->
+      <div class="calc-input-panel">
+
+        <!-- Card 1: Geographic Scope & Country Selection -->
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <div>
+              <h2 class="calc-card-title"><i class="fas fa-globe-asia" style="color:var(--calc-primary);"></i> 1. Country & System Profile</h2>
+              <div class="calc-card-subtitle">Select jurisdiction baseline or enter local system metadata</div>
+            </div>
+            <button id="btnHelpCountry" class="calc-nav-btn" style="padding:2px 8px; font-size:0.72rem;" title="Help on country selection">?</button>
+          </div>
+
+          <div class="calc-form-group">
+            <label class="calc-label" for="countrySelect">
+              <span>Jurisdiction Profile</span>
+              <span class="calc-label-badge" id="lblCountryTag">Preloaded</span>
+            </label>
+            <select id="countrySelect" class="calc-select calc-select-highlight">
+              <option value="India" selected>India (National Baseline & 35 States)</option>
+              <option value="Custom">Custom Country (Upload Excel Template...)</option>
+              <option value="low-income">Low-Income Country Profile (WHO Archetype)</option>
+              <option value="lower-middle">Lower-Middle Income Profile (WHO Archetype)</option>
+              <option value="upper-middle">Upper-Middle Income Profile (WHO Archetype)</option>
+              <option value="high-income">Universal School Health Model (High-Income)</option>
+            </select>
+          </div>
+
+          <div class="calc-input-grid">
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputCountryName">Country / System Name</label>
+              <input type="text" id="inputCountryName" class="calc-input" value="India (National Baseline & 35 States)">
+            </div>
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputCountryCurrency">Currency Code / Symbol</label>
+              <input type="text" id="inputCountryCurrency" class="calc-input" value="INR (₹)">
+            </div>
+          </div>
+
+          <div style="display:flex; gap:8px; margin-top:4px;">
+            <button id="btnOpenUploadModalDirect" class="calc-btn calc-btn-outline" style="flex:1; font-size:0.80rem; padding:8px 10px;" type="button">
+              <i class="fas fa-cloud-upload-alt" style="color:var(--calc-primary);"></i> Upload Excel (.xlsx)
+            </button>
+            <button id="btnDownloadTemplateLeft" class="calc-btn calc-btn-outline" style="flex:1; font-size:0.80rem; padding:8px 10px;" type="button">
+              <i class="fas fa-file-download" style="color:#057642;"></i> Template (.xlsx)
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 2: Outreach Policy Package & Camp Scheduling -->
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <div>
+              <h2 class="calc-card-title"><i class="fas fa-layer-group" style="color:var(--calc-primary);"></i> 2. Outreach Policy & Schedule</h2>
+              <div class="calc-card-subtitle">Set monthly camp frequency, team delegation, and shift bounds</div>
+            </div>
+            <button id="btnHelpTiers" class="calc-nav-btn" style="padding:2px 8px; font-size:0.72rem;" title="Help on policy tiers">?</button>
+          </div>
+
+          <!-- Quick Scenario Preset Chips -->
+          <div style="margin-bottom:12px;">
+            <div style="font-size:0.74rem; font-weight:700; color:var(--calc-text-muted); text-transform:uppercase; margin-bottom:6px;">
+              Policy Scenario Presets (Click to autofill values):
+            </div>
+            <div class="calc-preset-bar">
+              <button type="button" class="calc-preset-btn calc-tier-btn" data-tier="Status quo">
+                Status Quo (2 camps, 0% TS)
+              </button>
+              <button type="button" class="calc-preset-btn calc-tier-btn active" data-tier="Plausible">
+                <i class="fas fa-star" style="color:#f59e0b;"></i> Plausible (8 camps, 30% TS)
+              </button>
+              <button type="button" class="calc-preset-btn calc-tier-btn" data-tier="Stretch">
+                Stretch (12 camps, 30% TS)
+              </button>
+              <button type="button" class="calc-preset-btn calc-tier-btn" data-tier="Theoretical max">
+                Theoretical Max (22 camps, 30% TS)
+              </button>
+            </div>
+          </div>
+
+          <div class="calc-input-grid">
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputCampsPerMonth">
+                <span>School Camps / Month</span>
+                <span id="badgeCampsVal" class="calc-label-badge">8 camps/mo</span>
+              </label>
+              <input type="number" id="inputCampsPerMonth" class="calc-input" min="1" max="22" step="1" value="8">
+              <div class="calc-help-text">Visit days/dentist (22 days max/month).</div>
+            </div>
+
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputTs">
+                <span>Team Delegation (TS %)</span>
+                <span id="badgeDelegationVal" class="calc-label-badge">30% TS</span>
+              </label>
+              <input type="number" id="inputTs" class="calc-input" min="0" max="30" step="5" value="30">
+              <div class="calc-help-text">Delegates prevention to nurses & teachers.</div>
+            </div>
+
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputMonths">
+                <span>School Months / Year</span>
+                <span id="badgeMonthsVal" class="calc-label-badge">10 mos/yr</span>
+              </label>
+              <input type="number" id="inputMonths" class="calc-input" min="1" max="12" step="1" value="10">
+              <div class="calc-help-text">Annual operating academic months.</div>
+            </div>
+
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputShiftHours">
+                <span>Shift Duration</span>
+                <span id="badgeShiftVal" class="calc-label-badge">8.0 hrs/day</span>
+              </label>
+              <input type="number" id="inputShiftHours" class="calc-input" min="4" max="12" step="0.5" value="8.0">
+              <div class="calc-help-text">Camp clinic shift length (480 min).</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Healthcare Workforce Supply & Resource Allocation -->
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <div>
+              <h2 class="calc-card-title"><i class="fas fa-user-md" style="color:var(--calc-primary);"></i> 3. Healthcare Workforce Supply</h2>
+              <div class="calc-card-subtitle">Public dentists, outreach deployment rate, and staffing ratios</div>
+            </div>
+          </div>
+
+          <div class="calc-input-grid">
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputDentists">
+                <span>Public Dental Surgeons</span>
+                <span id="badgeDentistsVal" class="calc-label-badge">8,543</span>
+              </label>
+              <input type="number" id="inputDentists" class="calc-input" min="1" step="50" value="8543">
+              <div class="calc-help-text">Rostered public dental workforce.</div>
+            </div>
+
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputPhi">
+                <span>Outreach Rate (φ %)</span>
+                <span id="badgePhiVal" class="calc-label-badge">50%</span>
+              </label>
+              <input type="number" id="inputPhi" class="calc-input" min="5" max="100" step="5" value="50">
+              <div class="calc-help-text">Share deployed to school camps.</div>
+            </div>
+
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputAuxRatio">
+                <span>Nurses per Dentist</span>
+                <span id="badgeAuxVal" class="calc-label-badge">2.0</span>
+              </label>
+              <input type="number" id="inputAuxRatio" class="calc-input" min="0" max="10" step="0.5" value="2.0">
+              <div class="calc-help-text">Auxiliary nurses for varnish & triage.</div>
+            </div>
+
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputTeacherRatio">
+                <span>Teachers per School</span>
+                <span id="badgeTeacherVal" class="calc-label-badge">1.0</span>
+              </label>
+              <input type="number" id="inputTeacherRatio" class="calc-input" min="0" max="10" step="1" value="1.0">
+              <div class="calc-help-text">Teachers for oral hygiene education.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Target Student Population (Enrolment Cohort) -->
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <div>
+              <h2 class="calc-card-title"><i class="fas fa-user-graduate" style="color:var(--calc-primary);"></i> 4. Student Enrolment Cohort</h2>
+              <div class="calc-card-subtitle">Target school student population and age cohort breakdown</div>
+            </div>
+          </div>
+
+          <div class="calc-form-group">
+            <label class="calc-label" for="inputTotalEnrolment">
+              <span>Total School Population (6–15y)</span>
+              <span id="badgeTotalEnr" class="calc-label-badge">130.9 M</span>
+            </label>
+            <input type="number" id="inputTotalEnrolment" class="calc-input" min="1000" step="100000" value="130900000">
+            <div class="calc-help-text">Editing total auto-scales the three age cohorts below.</div>
+          </div>
+
+          <div class="calc-input-grid-3">
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputPop6_8" style="font-size:0.78rem;">Primary (6–8y)</label>
+              <input type="number" id="inputPop6_8" class="calc-input" min="500" step="50000" value="38200000">
+              <div class="calc-help-text">Classes 1–3</div>
+            </div>
+
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputPop9_11" style="font-size:0.78rem;">Upper Prim. (9–11y)</label>
+              <input type="number" id="inputPop9_11" class="calc-input" min="500" step="50000" value="44100000">
+              <div class="calc-help-text">Classes 4–6</div>
+            </div>
+
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputPop12_15" style="font-size:0.78rem;">Secondary (12–15y)</label>
+              <input type="number" id="inputPop12_15" class="calc-input" min="500" step="50000" value="48600000">
+              <div class="calc-help-text">Classes 7–10</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5: Epidemiology & Baseline Disease Burden -->
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <div>
+              <h2 class="calc-card-title"><i class="fas fa-tooth" style="color:var(--calc-primary);"></i> 5. Caries Epidemiology & Burden</h2>
+              <div class="calc-card-subtitle">Baseline DMFT index, brushing effect, and age-specific prevalence</div>
+            </div>
+          </div>
+
+          <div class="calc-input-grid">
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputMeanDmft">
+                <span>Mean Baseline DMFT</span>
+                <span id="badgeDmftVal" class="calc-label-badge">2.4</span>
+              </label>
+              <input type="number" id="inputMeanDmft" class="calc-input" min="0.1" max="12.0" step="0.1" value="2.4">
+              <div class="calc-help-text">Decayed, Missing, Filled Teeth score.</div>
+            </div>
+
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputRBenefit">
+                <span>Brushing Benefit (R %)</span>
+                <span id="badgeRVal" class="calc-label-badge">0%</span>
+              </label>
+              <input type="number" id="inputRBenefit" class="calc-input" min="0" max="10" step="1" value="0">
+              <div class="calc-help-text">Restorative risk reduction from drills.</div>
+            </div>
+          </div>
+
+          <div class="calc-input-grid-3">
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputPrev6_8" style="font-size:0.78rem;">Prevalence 6–8y (%)</label>
+              <input type="number" id="inputPrev6_8" class="calc-input" min="0.1" max="100.0" step="0.1" value="52.0">
+            </div>
+
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputPrev9_11" style="font-size:0.78rem;">Prevalence 9–11y (%)</label>
+              <input type="number" id="inputPrev9_11" class="calc-input" min="0.1" max="100.0" step="0.1" value="55.0">
+            </div>
+
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputPrev12_15" style="font-size:0.78rem;">Prevalence 12–15y (%)</label>
+              <input type="number" id="inputPrev12_15" class="calc-input" min="0.1" max="100.0" step="0.1" value="60.0">
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6: Camp Screening Dynamics & Workflow Parameters -->
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <div>
+              <h2 class="calc-card-title"><i class="fas fa-stopwatch" style="color:var(--calc-primary);"></i> 6. Camp Screening Dynamics & Flow</h2>
+              <div class="calc-card-subtitle">Daily morning referrals, repeat visits, and intake triage times</div>
+            </div>
+          </div>
+
+          <div class="calc-input-grid">
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputStudentsPerCamp">
+                <span>Students / Camp Day</span>
+                <span id="badgeStudentsVal" class="calc-label-badge">14 students</span>
+              </label>
+              <input type="number" id="inputStudentsPerCamp" class="calc-input" min="4" max="40" step="1" value="14">
+              <div class="calc-help-text">Referred children morning batch size.</div>
+            </div>
+
+            <div class="calc-form-group">
+              <label class="calc-label" for="inputRho">
+                <span>Repeat Visits (ρ %)</span>
+                <span id="badgeRhoVal" class="calc-label-badge">15%</span>
+              </label>
+              <input type="number" id="inputRho" class="calc-input" min="0" max="50" step="1" value="15">
+              <div class="calc-help-text">Annual re-attendance follow-up rate.</div>
+            </div>
+
+            <div class="calc-form-group" style="grid-column: span 2;">
+              <label class="calc-label" for="inputAdmitTime">
+                <span>Screening Time / Child</span>
+                <span id="badgeAdmitVal" class="calc-label-badge">1.0 min</span>
+              </label>
+              <input type="number" id="inputAdmitTime" class="calc-input" min="0.2" max="5.0" step="0.1" value="1.0">
+              <div class="calc-help-text">Average intake and triage duration per child by auxiliary nurse.</div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="calc-btn-row" style="margin-top:14px;">
+            <button id="btnRecalculate" class="calc-btn calc-btn-primary" type="button" style="flex:2; padding:12px 18px; font-size:0.92rem;">
+              <i class="fas fa-calculator"></i> Calculate Impact
+            </button>
+            <button id="btnResetDefaults" class="calc-btn calc-btn-outline" type="button" style="flex:1; padding:12px 14px; font-size:0.86rem;" title="Reset all parameters to Plausible Target defaults">
+              <i class="fas fa-redo"></i> Reset Defaults
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- RIGHT COLUMN: RESULTS & HEALTH SYSTEM IMPACT DASHBOARD                -->
+      <!-- ===================================================================== -->
+      <div class="calc-results-panel">
+
+        <!-- Headline Outcome KPI Cards -->
+        <div class="calc-kpi-grid">
+          <div class="calc-kpi-card green">
+            <div class="calc-kpi-title">Annual Children Reached</div>
+            <div id="kpiReached" class="calc-kpi-value">4.75 M</div>
+            <div class="calc-kpi-sub">Unique children receiving care</div>
+          </div>
+
+          <div class="calc-kpi-card">
+            <div class="calc-kpi-title">National Population Coverage</div>
+            <div id="kpiCoverage" class="calc-kpi-value">12.03%</div>
+            <div class="calc-kpi-sub">Of untreated caries burden</div>
+          </div>
+
+          <div class="calc-kpi-card amber">
+            <div class="calc-kpi-title">Dentist Time Protected</div>
+            <div id="kpiDentistSaved" class="calc-kpi-value">85.0%</div>
+            <div class="calc-kpi-sub">Preserved for hospital surgery</div>
+          </div>
+
+          <div class="calc-kpi-card rose">
+            <div class="calc-kpi-title">Dedicated Dentists Needed</div>
+            <div id="kpiDentistsNeeded" class="calc-kpi-value">18,379</div>
+            <div class="calc-kpi-sub">To eliminate untreated caries</div>
+          </div>
+
+          <div class="calc-kpi-card purple">
+            <div class="calc-kpi-title">In-Year Morbidity Averted</div>
+            <div id="kpiYldInYear" class="calc-kpi-value">7,028</div>
+            <div class="calc-kpi-sub">Years lived with disability</div>
+          </div>
+        </div>
+
+        <!-- Comparative Scenario Analysis Table (CPHR-MANT Style) -->
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <div>
+              <h3 class="calc-card-title"><i class="fas fa-balance-scale" style="color:var(--calc-primary);"></i> Policy Impact Comparison</h3>
+              <div class="calc-card-subtitle">Comparing Solo Practice Baseline against Your Selected Scenario</div>
+            </div>
+            <button id="btnDownloadTableExcel" class="calc-nav-btn" style="padding:4px 10px; font-size:0.76rem;" title="Download this comparison table as Excel">
+              <i class="fas fa-file-excel" style="color:#057642;"></i> Export Table
+            </button>
+          </div>
+
+          <div class="calc-table-wrap">
+            <table class="calc-table" id="tableComparison">
+              <thead>
+                <tr>
+                  <th>Outcome Indicator</th>
+                  <th style="text-align:center;">Current Practice (Solo Dentist)</th>
+                  <th style="text-align:center; background:#e8f3fc; color:#0a66c2;">Your Selected Policy</th>
+                  <th style="text-align:center;">Net Clinical Gain</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Monthly School Visit Days</strong></td>
+                  <td style="text-align:center;">2 camps / month</td>
+                  <td style="text-align:center; font-weight:700;" id="compCamps">8 camps / month</td>
+                  <td style="text-align:center;" id="compCampsDiff">+6 camps / mo</td>
+                </tr>
+                <tr>
+                  <td><strong>Multidisciplinary Team Delegation</strong></td>
+                  <td style="text-align:center;">0% (Solo Dentist)</td>
+                  <td style="text-align:center; font-weight:700;" id="compDelegation">30% Team Delegation</td>
+                  <td style="text-align:center;"><span class="calc-badge calc-badge-green">Task-Shifting Active</span></td>
+                </tr>
+                <tr class="calc-row-highlight">
+                  <td><strong>Unique Children Treated Annually</strong></td>
+                  <td style="text-align:center;" id="compBaseReached">0.94 M</td>
+                  <td style="text-align:center; font-weight:800; color:#0a66c2;" id="compSelReached">4.75 M</td>
+                  <td style="text-align:center; font-weight:700; color:#057642;" id="compGainReached">+3.81 Million Children</td>
+                </tr>
+                <tr class="calc-row-highlight">
+                  <td><strong>Population Coverage (%)</strong></td>
+                  <td style="text-align:center;" id="compBaseCoverage">2.37%</td>
+                  <td style="text-align:center; font-weight:800; color:#0a66c2;" id="compSelCoverage">12.03%</td>
+                  <td style="text-align:center; font-weight:700; color:#057642;" id="compGainCoverage">+9.66 pp (5.1× Reach)</td>
+                </tr>
+                <tr>
+                  <td><strong>Hospital Dentist Working Time Protected</strong></td>
+                  <td style="text-align:center;" id="compBaseSaved">96.5%</td>
+                  <td style="text-align:center; font-weight:700;" id="compSelSaved">85.0%</td>
+                  <td style="text-align:center;">Protected for Complex Surgery</td>
+                </tr>
+                <tr>
+                  <td><strong>Dedicated Dentists Needed for 100%</strong></td>
+                  <td style="text-align:center;" id="compBaseDentNeeded">434,812 Dentists</td>
+                  <td style="text-align:center; font-weight:700;" id="compSelDentNeeded">18,379 Dentists</td>
+                  <td style="text-align:center; font-weight:700; color:#057642;" id="compDentSaved">-416,433 Dentists Saved</td>
+                </tr>
+                <tr>
+                  <td><strong>In-Year Morbidity Averted (YLDs)</strong></td>
+                  <td style="text-align:center;" id="compBaseYld">1,380 YLDs</td>
+                  <td style="text-align:center; font-weight:700;" id="compSelYld">7,028 YLDs</td>
+                  <td style="text-align:center; font-weight:700; color:#057642;" id="compGainYld">+5,648 YLDs Averted</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Clinical Interventions & Service Delivery Streams -->
+        <div class="calc-card">
+          <div class="calc-card-header">
+            <div>
+              <h3 class="calc-card-title"><i class="fas fa-stethoscope" style="color:var(--calc-primary);"></i> Clinical Service Delivery Streams</h3>
+              <div class="calc-card-subtitle">Distribution of care across dentists, auxiliary nurses, and teachers</div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap:14px;">
+            <div style="border:1px solid var(--calc-border); border-radius:8px; padding:14px; background:#f8fafc;">
+              <div style="font-size:0.75rem; font-weight:700; color:#0a66c2; text-transform:uppercase;">1. Dental Surgeon</div>
+              <div style="font-size:1.15rem; font-weight:700; margin:4px 0;" id="procDentistCount">1.43 Million</div>
+              <div style="font-size:0.76rem; color:var(--calc-text-muted);">Restorations (ART / GIC fillings), extractions, pulpectomy</div>
+            </div>
+
+            <div style="border:1px solid var(--calc-border); border-radius:8px; padding:14px; background:#f8fafc;">
+              <div style="font-size:0.75rem; font-weight:700; color:#057642; text-transform:uppercase;">2. Auxiliary Dental Nurse</div>
+              <div style="font-size:1.15rem; font-weight:700; margin:4px 0;" id="procAuxCount">1.90 Million</div>
+              <div style="font-size:0.76rem; color:var(--calc-text-muted);">Preventive fluoride varnish (5% NaF) & admission screening</div>
+            </div>
+
+            <div style="border:1px solid var(--calc-border); border-radius:8px; padding:14px; background:#f8fafc;">
+              <div style="font-size:0.75rem; font-weight:700; color:#0891b2; text-transform:uppercase;">3. Trained Teacher</div>
+              <div style="font-size:1.15rem; font-weight:700; margin:4px 0;" id="procTeacherCount">1.42 Million</div>
+              <div style="font-size:0.76rem; color:var(--calc-text-muted);">Classroom oral health coaching & tooth-brushing instruction</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Executive Policy Summary Briefing Card -->
+        <div class="calc-card" style="background:#fdfefe; border-left:4px solid var(--calc-primary);">
+          <div class="calc-card-header" style="border-bottom:none; padding-bottom:0;">
+            <h3 class="calc-card-title" style="font-size:0.95rem;">
+              <i class="fas fa-file-alt" style="color:var(--calc-primary);"></i> Executive Briefing for Health Planners & Policymakers
+            </h3>
+          </div>
+          <div id="calcBriefingText" style="font-size:0.86rem; color:#334155; line-height:1.6; margin-top:8px;">
+            Loading policy brief...
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 1: COUNTRY DATA SETUP & EXCEL TEMPLATE UPLOAD                       -->
+  <!-- ========================================================================= -->
+  <div id="countryTemplateModal" class="calc-modal-backdrop">
+    <div class="calc-modal">
+      <div class="calc-modal-header">
+        <div>
+          <h3 class="calc-modal-title"><i class="fas fa-globe-americas" style="color:var(--calc-primary);"></i> Country Data Setup & Input Template</h3>
+          <div style="font-size:0.78rem; color:var(--calc-text-muted); margin-top:2px;">Download the Excel template, enter local parameters, or upload your data</div>
+        </div>
+        <button id="btnCloseCountryModal" class="calc-modal-close" type="button">&times;</button>
+      </div>
+
+      <div class="calc-modal-body">
+        <!-- Step A: Download Template -->
+        <div style="background:#f8fafc; border:1px solid var(--calc-border); border-radius:8px; padding:16px; margin-bottom:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+            <div>
+              <strong style="font-size:0.92rem; color:#0f172a;"><i class="fas fa-file-excel" style="color:#057642; margin-right:6px;"></i> Step 1: Download Standard Input Template</strong>
+              <p style="font-size:0.78rem; color:var(--calc-text-muted); margin:4px 0 0 0;">
+                Pre-formatted 3-sheet workbook with demographic splits (6–8y, 9–11y, 12–15y), dentist supply, caries prevalence, and provinces.
+              </p>
+            </div>
+            <button id="btnModalDownloadTemplate" class="calc-btn calc-btn-success" style="font-size:0.82rem; padding:8px 14px;" type="button">
+              <i class="fas fa-file-download"></i> Download Template (.xlsx)
+            </button>
+          </div>
+        </div>
+
+        <!-- Step B: Upload File -->
+        <div>
+          <strong style="font-size:0.92rem; color:#0f172a;"><i class="fas fa-cloud-upload-alt" style="color:var(--calc-primary); margin-right:6px;"></i> Step 2: Upload Completed File</strong>
+          <p style="font-size:0.78rem; color:var(--calc-text-muted); margin:2px 0 8px 0;">
+            Upload your filled Excel template (.xlsx, .xls), CSV file (.csv), or JSON profile (.json).
+          </p>
+
+          <div id="dropzoneCountry" class="calc-dropzone">
+            <div class="calc-dropzone-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div class="calc-dropzone-title">Click to browse or drag and drop your completed file</div>
+            <div class="calc-dropzone-sub">Supported formats: Microsoft Excel (.xlsx), CSV (.csv), JSON (.json)</div>
+            <input type="file" id="modalFileUpload" accept=".xlsx, .xls, .csv, .json" style="display:none">
+          </div>
+
+          <!-- Upload Status Preview Banner -->
+          <div id="uploadPreviewBanner" style="display:none; margin-top:12px; background:var(--calc-accent-soft); border:1px solid rgba(5,118,66,0.3); border-radius:6px; padding:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="color:var(--calc-accent); font-size:0.86rem;"><i class="fas fa-check-circle"></i> File Successfully Parsed!</strong>
+                <div id="uploadPreviewDetails" style="font-size:0.78rem; color:#1e293b; margin-top:2px;"></div>
+              </div>
+              <button id="btnApplyUploadedData" class="calc-btn calc-btn-primary" style="padding:6px 14px; font-size:0.8rem;" type="button">
+                Apply to Calculator
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step C: Quick International Archetypes -->
+        <div style="margin-top:20px; border-top:1px dashed var(--calc-border); padding-top:14px;">
+          <strong style="font-size:0.84rem; color:var(--calc-text-muted); text-transform:uppercase; letter-spacing:0.5px;">Or Select a Pre-Configured Global Archetype:</strong>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px;">
+            <button class="calc-nav-btn btn-quick-archetype" data-preset="low-income" style="justify-content:flex-start; text-align:left;">
+              <div><strong>Low-Income Country</strong><div style="font-size:0.7rem; color:var(--calc-text-muted);">~40k stud/dent; 65% caries</div></div>
+            </button>
+            <button class="calc-nav-btn btn-quick-archetype" data-preset="lower-middle" style="justify-content:flex-start; text-align:left;">
+              <div><strong>Lower-Middle Income</strong><div style="font-size:0.7rem; color:var(--calc-text-muted);">~11k stud/dent; 52% caries</div></div>
+            </button>
+            <button class="calc-nav-btn btn-quick-archetype" data-preset="upper-middle" style="justify-content:flex-start; text-align:left;">
+              <div><strong>Upper-Middle Income</strong><div style="font-size:0.7rem; color:var(--calc-text-muted);">~4k stud/dent; 45% caries</div></div>
+            </button>
+            <button class="calc-nav-btn btn-quick-archetype" data-preset="high-income" style="justify-content:flex-start; text-align:left;">
+              <div><strong>Universal Screening</strong><div style="font-size:0.7rem; color:var(--calc-text-muted);">~1k stud/dent; 25% caries</div></div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-modal-footer">
+        <button id="btnCloseCountryModalFooter" class="calc-btn calc-btn-outline" type="button">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 2: IN-DEPTH "HOW TO GET STARTED" GUIDE                              -->
+  <!-- ========================================================================= -->
+  <div id="howToGuideModal" class="calc-modal-backdrop">
+    <div class="calc-modal" style="max-width:820px;">
+      <div class="calc-modal-header">
+        <div>
+          <h3 class="calc-modal-title"><i class="fas fa-book-reader" style="color:var(--calc-primary);"></i> How to Get Started: Complete User & Methodology Guide</h3>
+          <div style="font-size:0.78rem; color:var(--calc-text-muted); margin-top:2px;">Step-by-step instructions, template reference, and policy metric interpretations</div>
+        </div>
+        <button id="btnCloseGuideModal" class="calc-modal-close" type="button">&times;</button>
+      </div>
+
+      <div class="calc-modal-body">
+        
+        <!-- Section 1: Overview -->
+        <div style="margin-bottom:20px;">
+          <h4 style="font-size:0.98rem; font-weight:700; color:#0f172a; margin:0 0 6px 0;">1. Purpose of This Calculator</h4>
+          <p style="font-size:0.85rem; color:#334155; margin:0 0 8px 0;">
+            Dental caries (tooth decay) is the most widespread chronic condition in school-age children globally, affecting over 500 million children in low- and middle-income countries. Public dental workforce shortages mean that solo dentists visiting schools face severe clinical bottlenecks: spending hours on tooth-brushing instruction and simple fluoride varnish while hundreds of children wait unserved.
+          </p>
+          <p style="font-size:0.85rem; color:#334155; margin:0;">
+            This tool evaluates how <strong>multidisciplinary team delegation (task-shifting)</strong> transforms school camps: delegating tooth-brushing education to trained classroom teachers and preventive fluoride varnish to auxiliary nurses, allowing dental surgeons to focus exclusively on restorative cavity treatments (ART/GIC fillings).
+          </p>
+        </div>
+
+        <!-- Section 2: Step-by-Step User Workflow -->
+        <div style="margin-bottom:20px;">
+          <h4 style="font-size:0.98rem; font-weight:700; color:#0f172a; margin:0 0 6px 0;">2. Step-by-Step Workflow</h4>
+          <ol style="font-size:0.85rem; color:#334155; margin:0; padding-left:20px; line-height:1.7;">
+            <li><strong>Select or Upload Your Country:</strong> Use the Country dropdown to choose India (pre-loaded with national data and 35 states) or upload a custom Excel file for any nation, province, or district.</li>
+            <li><strong>Choose a Policy Deployment Tier:</strong> Select between <em>Status Quo</em> (2 camps/month, solo dentist), <em>Plausible Target</em> (8 camps/month, 30% delegation — recommended), <em>Stretch</em> (12 camps/month), or <em>Theoretical Maximum</em>.</li>
+            <li><strong>Adjust Team Delegation Level:</strong> Choose between 0% (solo dentist), 10% (teachers), 20% (nurses), or 30% (full delegation).</li>
+            <li><strong>Review Live Results:</strong> Watch the headline KPI cards, comparative table, and clinical breakdown update in real time.</li>
+            <li><strong>Export Outputs:</strong> Download comprehensive Excel spreadsheets (.xlsx) or copy executive policy text for reports and presentations.</li>
+          </ol>
+        </div>
+
+        <!-- Section 3: Excel Template Guide -->
+        <div style="margin-bottom:20px;">
+          <h4 style="font-size:0.98rem; font-weight:700; color:#0f172a; margin:0 0 6px 0;">3. Excel Template Field Reference</h4>
+          <p style="font-size:0.84rem; color:var(--calc-text-muted); margin-bottom:8px;">
+            The downloadable Excel template (<code>Dental_Caries_DES_Input_Template.xlsx</code>) contains three structured sheets:
+          </p>
+          <div class="calc-table-wrap">
+            <table class="calc-table" style="font-size:0.78rem;">
+              <thead>
+                <tr>
+                  <th>Field Key</th>
+                  <th>Description</th>
+                  <th>Recommended Unit / Format</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>country_name</code></td>
+                  <td>Official name of your country, state, or province</td>
+                  <td>Text (e.g. Kenya, Brazil, Universal)</td>
+                </tr>
+                <tr>
+                  <td><code>enrol_6_8</code>, <code>enrol_9_11</code>, <code>enrol_12_15</code></td>
+                  <td>Target student population by primary, upper primary, and secondary grades</td>
+                  <td>Integer count (or 35% / 33% / 32% demographic split)</td>
+                </tr>
+                <tr>
+                  <td><code>dentists_public</code></td>
+                  <td>Total active government dental surgeons available for public programs</td>
+                  <td>FTE count</td>
+                </tr>
+                <tr>
+                  <td><code>prev_6_8</code>, <code>prev_9_11</code>, <code>prev_12_15</code></td>
+                  <td>Untreated active caries prevalence across each age category</td>
+                  <td>Decimal proportion (e.g. 0.52 for 52%)</td>
+                </tr>
+                <tr>
+                  <td><code>camps_per_month</code></td>
+                  <td>Operational camp visit days per dentist per month</td>
+                  <td>2 to 22 (8 days/month recommended)</td>
+                </tr>
+                <tr>
+                  <td><code>task_shifting_level</code></td>
+                  <td>Team delegation intensity</td>
+                  <td>0%, 10%, 20%, or 30%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Section 4: KPI Interpretations -->
+        <div style="margin-bottom:14px;">
+          <h4 style="font-size:0.98rem; font-weight:700; color:#0f172a; margin:0 0 6px 0;">4. Interpreting Output Indicators</h4>
+          <ul style="font-size:0.84rem; color:#334155; margin:0; padding-left:20px; line-height:1.7;">
+            <li><strong>Annual Children Reached:</strong> The total count of unique students who receive complete treatment during the academic year.</li>
+            <li><strong>National Caries Coverage (%):</strong> The percentage of all school-age children with active untreated caries reached by the program.</li>
+            <li><strong>Dentist Time Protected:</strong> Percentage of dentist monthly contracted hours preserved for specialized restorative hospital clinics rather than routine school screenings.</li>
+            <li><strong>Dedicated Dentists Needed:</strong> The number of additional full-time school dental surgeons required to reach 100% universal caries coverage under the selected policy model.</li>
+            <li><strong>In-Year Morbidity Averted (YLDs):</strong> Cumulative Years Lived with Disability avoided among treated children using WHO Global Burden of Disease disability weights.</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="calc-modal-footer">
+        <button id="btnCloseGuideModalFooter" class="calc-btn calc-btn-primary" type="button">Understood & Close Guide</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Core Calculation Libraries -->
+  <script src="xlsx.full.min.js"></script>
+  <script src="data.js"></script>
+  <script src="simulation.js?v=2.3"></script>
+  <script src="exporter.js?v=2.3"></script>
+  <script src="calculator.js?v=1.0"></script>
+</body>
+</html>

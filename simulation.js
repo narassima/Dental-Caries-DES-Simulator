@@ -165,6 +165,9 @@
   }
 
   function relativeRisk(zone, gradient = "janakiram") {
+    if (gradient === "none" || zone === "Custom" || zone === "National") {
+      return [1.0, 1.0, 1.0];
+    }
     if (gradient === "pandey") {
       const pZone = PANDEY_ZONE[zone] || "Overall";
       const ratio = (PANDEY[pZone] || 54.16) / PANDEY["South"];
@@ -566,10 +569,11 @@
       dw_mult = 1.0,
       dur = DUR_BASE,
       dent_mult = 1.0,
+      refPrev = KERALA_PREV,
       rng = Math.random
     } = options;
 
-    const poolsInfo = calculateStatePools(entity, gradient, anchor);
+    const poolsInfo = calculateStatePools(entity, gradient, anchor, refPrev);
     const P = poolsInfo.pools;
     const P_total = poolsInfo.totalPool;
     const share = P_total > 0 ? P.map(p => p / P_total) : [0.33, 0.33, 0.34];

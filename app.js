@@ -1,6 +1,6 @@
 /**
  * Dental Caries Discrete Event Simulation (DES) Platform
- * LinkedIn-Themed Light UI Controller, Interactive Animation Engine & Manuscript Plots
+ * Light UI Controller, Interactive Animation Engine & Manuscript Plots
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
       category: "System Scope",
       summary: "Switches between the default empirical India model (35 States & UTs) and the Custom Country Modeler.",
       details: "By default, India is loaded with observed enrolment data (UDISE+ 2024-25), government dental surgeon counts (NHP 2022), and zonal caries prevalence. When 'Custom Country' is chosen, users can configure any country's student enrolment, public dental workforce, and caries prevalence, or load WHO global archetypes.",
-      reference: "Manuscript § Materials and Methods; Table A1"
+      reference: "Manuscript Methods; Supplementary Material"
     },
     unique_children: {
       title: "Unique Children Reached",
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
       details: "In months 2–10 of the school year, repeat visits (such as second fluoride applications or check-ups) consume a portion of camp slots. This metric subtracts repeat visits so each student is credited only once towards population coverage.",
       formula: "∑ U_g, where U_g is updated monthly by min(S_g - Repeat_g, P_g - U_g)",
       baseline: "4.75 Million children nationally (Plausible tier; Status quo: 0.93M; Theoretical max: 20.18M)",
-      reference: "Manuscript § School-Year Layer and Health Outcomes; Table 1"
+      reference: "Manuscript Methods; Table 1"
     },
     annual_coverage: {
       title: "Annual Caries Coverage (%)",
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       details: "Measures the extent to which school dental camps penetrate the total epidemiological burden. Demonstrates that while task-shifting expands reach, structural workforce shortages constrain national coverage to 12% in the headline scenario.",
       formula: "(Total Unique Children Reached / Total Caries Prevalent Pool P) × 100%",
       baseline: "12.03% national coverage (Plausible tier; interstate range: 2.3% in MP to 64.9% in DNH&DD)",
-      reference: "Manuscript Abstract & Table 1, Table 2"
+      reference: "Manuscript Results; Table 1; Table 2"
     },
     unmet_need: {
       title: "Unmet Caries Burden (Children)",
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
       details: "Untreated caries leads to odontogenic infections, severe toothache, nutritional difficulties, and school absenteeism. The unmet need represents the remaining public health deficit.",
       formula: "max(0, Total Caries Pool P - Total Unique Children Reached U)",
       baseline: "34.72 Million children nationally (Plausible tier)",
-      reference: "Manuscript Results § Feasibility Tiers; Table 1"
+      reference: "Manuscript Results; Table 1"
     },
     dentists_needed: {
       title: "Additional Dedicated School Dentists Needed",
@@ -48,16 +48,16 @@ document.addEventListener('DOMContentLoaded', () => {
       details: "Calculated by dividing the unmet need by 1,889—the empirical annual reach of a single dedicated dentist holding 16 camps/month for 10 months with task-shifting delegation and 11.8 new children per camp.",
       formula: "Unmet Need / 1,889",
       baseline: "18,379 dedicated school dental surgeons across India (Plausible tier)",
-      reference: "Manuscript Methods § Interstate Comparison and Workforce Gap; Equation 14; Table 2"
+      reference: "Manuscript Methods; Table 2"
     },
     dent_util: {
       title: "Dentist Capacity Utilization (%)",
       category: "Operational Efficiency KPI",
       summary: "Percentage of a dentist's total contracted working hours spent actively performing clinical procedures during school camps.",
-      details: "One school camp represents one 8-hour dentist-day. Even at 8 camps/month, dentists spend ~15% of their monthly time on school camp procedures, leaving 85% of working hours available for general hospital or community clinic duties.",
+      details: "One school camp represents one 8-hour dentist-day. At 8 camps/month, procedures take about 14.5% of working time. Camp days themselves take 8 of 22 working days (36%), so this figure is not the share of time left for clinics.",
       formula: "Total Procedure Minutes / (N_av × 22 days/mo × 480 min/day × 10 months) × 100%",
-      baseline: "15.0% under Plausible tier (Status quo: 3.5%; Stretch: 22.5%; Theoretical max: 41.3%)",
-      reference: "Manuscript Results § Process: What Task-Shifting Releases; Table 1"
+      baseline: "14.5% under Plausible tier (Status quo: 4.0%; Stretch: 21.7%; Theoretical max: 39.8%)",
+      reference: "Manuscript Results; Table 1"
     },
     yld_inyear: {
       title: "Years Lived with Disability (YLDs) Averted — In-Year",
@@ -65,8 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
       summary: "Morbidity burden averted among newly treated children during the remainder of the 12-month calendar year following treatment.",
       details: "Each treated child is weighted by the clinical effectiveness drawn for their intervention (probability condition is averted), disability weight (0.010 for caries, 0.007 for scaling), and remaining share of the 12-month year.",
       formula: "∑ Eff_New × DW × min(duration, remaining_year_share)",
-      baseline: "7,028 YLDs averted in-year nationally (Plausible tier)",
-      reference: "Manuscript Methods § School-Year Layer and Health Outcomes; Table 2 & Table 3"
+      baseline: "7,110 YLDs averted in-year nationally (Plausible tier)",
+      reference: "Manuscript Methods; Table 1 & Table 2"
     },
     yld_dur: {
       title: "Duration-Adjusted YLDs Averted (Discounted)",
@@ -74,43 +74,43 @@ document.addEventListener('DOMContentLoaded', () => {
       summary: "Cumulative disability burden averted over the entire biological duration of effect of each intervention, discounted at 3% per year.",
       details: "Restorative procedures provide health benefits beyond the treatment year: 3 years for stainless steel crowns and GIC restorations, 2 years for ART and pulpectomy, and 0.5 years for OHE, fluoride varnish, and scaling.",
       formula: "∑ Eff_New × DW × [ (1 - e^(-0.03 × duration)) / 0.03 ]",
-      baseline: "24,082 duration-adjusted YLDs averted nationally (Plausible tier)",
-      reference: "Manuscript Methods § School-Year Layer; Table A13"
+      baseline: "22,222 duration-adjusted YLDs averted nationally (Plausible tier)",
+      reference: "Manuscript Methods; Supplementary Material"
     },
     feasibility_tiers: {
       title: "Feasibility Tiers (Table 1)",
       category: "Policy Framework",
       summary: "Four structured policy deployment packages that separate realistic operational expansion from theoretical bounds.",
       details: "Tiers span from Status Quo (2 camps/mo, TS 0%) to Plausible (8 camps/mo, TS 30%, φ=0.5 — headline scenario), Stretch (12 camps/mo, TS 30%, φ=0.8), and Theoretical Maximum (22 camps/mo, φ=1.0).",
-      reference: "Manuscript § Scenarios and Feasibility Tiers; Table 1"
+      reference: "Manuscript Methods; Table 1"
     },
     tier_status_quo: {
       title: "Status Quo Tier",
       category: "Baseline Deployment",
       summary: "2 camps per available dentist per month, no task-shifting delegation (TS 0%), φ = 0.5.",
       details: "Dentist works alone delivering all procedures including education and fluoride. Achieves only 2.37% national coverage and leaves 38.53 Million children with untreated caries.",
-      reference: "Table 1; Row 1"
+      reference: "Table 1"
     },
     tier_plausible: {
       title: "Plausible Tier (Headline Target)",
       category: "Recommended Policy",
       summary: "8 camps/month (2 school days a week), task-shifting delegation with 30% more referrals (TS 30%), φ = 0.5.",
       details: "OHE is delegated to teachers, fluoride varnish to auxiliaries, and dentists deliver clinical restorations. Achieves 12.03% coverage (4.75 Million children) with a 15% dentist utilization rate.",
-      reference: "Manuscript Abstract; Results § Feasibility Tiers; Table 1"
+      reference: "Manuscript Results; Table 1"
     },
     tier_stretch: {
       title: "Stretch Tier",
       category: "High-Intensity Policy",
       summary: "12 camps/month (3 school days a week), TS 30% delegation, φ = 0.8 (80% of government dental surgeons deployed).",
       details: "Requires substantial health system reorganization to deploy 8,230 dentists for schools, achieving 27.35% coverage (10.8 Million children).",
-      reference: "Table 1; Row 3"
+      reference: "Table 1"
     },
     tier_theomax: {
       title: "Theoretical Maximum Tier",
       category: "Upper Theoretical Bound",
       summary: "22 camps/month (every working day), TS 30% delegation, φ = 1.0 (100% of all 10,287 government dentists).",
       details: "Illustrates the mathematical ceiling if every public dental surgeon did nothing but school dental camps every working day. Reaches 51.15% coverage (20.18 Million children), proving that workforce supply—not camp scheduling—is the ultimate barrier.",
-      reference: "Table 1; Row 4"
+      reference: "Table 1"
     },
     camps_slider: {
       title: "Camps per Available Dentist / Month",
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
       summary: "Number of 8-hour dental camp days conducted by each deployed dental surgeon per month.",
       details: "A standard working month has 22 days. Holding 8 camps/month means dentists spend 2 days a week in schools and 14 days in hospitals/community clinics.",
       default: "8 camps/month (range: 2 to 22)",
-      reference: "Manuscript § Camp Process and Explicit Task-Shifting; Table A2"
+      reference: "Manuscript Methods; Supplementary Material"
     },
     ts_slider: {
       title: "Task-Shifting Level (TS%)",
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
       summary: "Level of task delegation paired with expanded student referrals.",
       details: "TS = 0%: Dentist performs all admissions and treatments alone.\nTS = 10%–30%: OHE is routed to teachers; Fluoride varnish to auxiliaries (after completing admissions); Dentist performs ART, SSC, Pulpectomy, GIC, and Scaling. Because delegation frees dentist time, camps accommodate 10%–30% more referrals.",
       default: "30% TS (+30% referrals per camp)",
-      reference: "Manuscript Methods § Camp Process and Explicit Task-Shifting"
+      reference: "Manuscript Methods"
     },
     phi_slider: {
       title: "Workforce Availability (φ)",
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
       summary: "Share of government-employed dental surgeons deployed for school dental camps.",
       details: "Not all public dentists can leave hospital wards and emergency clinics. φ = 0.5 assumes half of registered government dental surgeons are available for school services. In the PSA, φ is varied between 0.30 and 0.80.",
       default: "0.50 (50% availability)",
-      reference: "Manuscript Methods § Workforce Available for School Services; Equation 2"
+      reference: "Manuscript Methods"
     },
     rho_slider: {
       title: "Repeat-Visit Share (ρ)",
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
       summary: "Share of camp slots in months 2 through 10 absorbed by children who have already been treated earlier in the school year.",
       details: "Accounts for follow-up checks, second fluoride varnish coats, or restorative reviews. Without modeling ρ, models severely overestimate unique child coverage.",
       default: "0.15 (15% repeat visit share; PSA range: 5%–30%)",
-      reference: "Manuscript Methods § School-Year Layer; Table A3"
+      reference: "Manuscript Methods; Supplementary Material"
     },
     r_slider: {
       title: "Preventive Effect on OHE Need (R)",
@@ -150,84 +150,84 @@ document.addEventListener('DOMContentLoaded', () => {
       summary: "Simulates preventive reduction in baseline oral health education need.",
       details: "R = 5 cuts the proportion of referred students needing OHE by 5 percentage points, renormalizing remaining clinical intervention probabilities.",
       default: "R = 0 (Base case); R = 5 (Preventive scenario)",
-      reference: "Table A2; Section B"
+      reference: "Supplementary Material"
     },
     shift_length: {
       title: "Camp Shift Length (480 Minutes)",
       category: "Operational Constraint",
       summary: "Standard 8-hour school day (09:00 to 17:00 = 480 minutes).",
       details: "Each resource (Dentist, Auxiliary, Teacher) operates as a single FIFO server. A procedure is performed only if it can begin before minute 480.",
-      reference: "Manuscript Methods § Camp Process; des2.py"
+      reference: "Manuscript Methods; des.py"
     },
     batch_arrival: {
       title: "Batch Student Arrival",
       category: "Queue Arrival Process",
       summary: "Referred students arrive as a batch at the beginning of the camp day.",
       details: "Base referral size is Ceil(U(8, 12)) with a mean of 10.5 students. Under task-shifting, referrals increase by 10%–30% (mean ~13.7 at TS 30%).",
-      reference: "Table A2; Section F"
+      reference: "Supplementary Material"
     },
     aux_admission: {
       title: "Auxiliary Admission (Non-Value-Added Time)",
       category: "Triage Flow",
       summary: "Non-value-added intake and triage time taken by the dental auxiliary.",
       details: "Drawn uniformly from U(0.5, 1.5) minutes per student. Auxiliary admits all students in FIFO order before becoming available for fluoride varnish.",
-      reference: "Table A2; Section D"
+      reference: "Supplementary Material"
     },
     triage_routing: {
       title: "Task-Shifting Triage Routing",
       category: "Resource Delegation",
       summary: "Automated routing of admitted students based on clinical need.",
       details: "TS = 0: All students queue for the dentist.\nTS > 0: OHE routes to trained teacher; Fluoride varnish routes to auxiliary; Clinical procedures (ART, SSC, Pulpectomy, GIC, Scaling) route to dentist.",
-      reference: "Figure 1; des2.py"
+      reference: "Figure 1; des.py"
     },
     shift_cutoff: {
       title: "Shift Cut-off at 480 Minutes",
       category: "Lindley Recursion Rule",
       summary: "Students whose service start time would exceed 480 minutes are recorded as unserved.",
-      details: "In empirical verification (Table A14), fewer than 0.001% of referred students were left unserved under base calibration.",
-      reference: "Manuscript Methods § Model Verification"
+      details: "In empirical verification (Supplementary Material), fewer than 0.001% of referred students were left unserved under base calibration.",
+      reference: "Manuscript Methods"
     },
     subnational_disparity: {
       title: "Subnational Structural Disparities",
       category: "Epidemiological Finding",
       summary: "Over 200-fold variation in dentist availability across Indian states.",
       details: "Ratios range from 427 students per dentist in DNH&DD to 58,543 in Madhya Pradesh and 33,174 in Chhattisgarh. Consequently, plausible coverage ranges from 2.3% in MP to 64.9% in DNH&DD.",
-      reference: "Manuscript Results § Subnational Variation; Figure 6 & Figure 7"
+      reference: "Manuscript Results; Figure 3 & Figure 4"
     },
     caries_pool: {
       title: "Caries Prevalent Population (P)",
       category: "Target Burden",
       summary: "Government school students in Classes 1–10 with untreated dental caries.",
       details: "Calculated by multiplying enrolment by age-specific caries prevalence derived from Kerala baseline profile (41.71%, 34.80%, 23.48%) scaled by zone relative risk. National total: 39.5 Million children.",
-      reference: "Manuscript § Population Need; Table A1"
+      reference: "Manuscript Methods; Supplementary Material"
     },
     govt_dentists: {
       title: "Government Dental Surgeons (N)",
       category: "Public Workforce Supply",
       summary: "Official count of dental surgeons employed by state health services.",
       details: "Sourced from National Health Profile (NHP 2022; Telangana from 2018; DNH&DD from 2019). Total: 10,287 government dentists across India.",
-      reference: "Table A1; Table 2"
+      reference: "Supplementary Material; Table 2"
     },
     students_per_dentist: {
       title: "Students per Government Dentist Ratio",
       category: "Structural Equity Metric",
       summary: "Government school enrolment divided by government dental surgeons.",
       details: "Represents the structural workload bottleneck. States with more than 20,000 students per dentist cannot exceed 10% coverage under plausible conditions without hiring dedicated school dentists.",
-      reference: "Figure 7; Table 2"
+      reference: "Figure 4; Table 2"
     },
     psa_uncertainty: {
       title: "Probabilistic Sensitivity Analysis (PSA) 95% UI",
       category: "Statistical Robustness",
       summary: "2.5th and 97.5th percentiles of coverage from Monte Carlo draws (capped at 200).",
       details: "Jointly samples regional gradients (Janakiram vs Pandey), prevalence anchors (±20%), φ (0.3–0.8), referral multipliers (±15%), process times (±15%), effectiveness (±20%), and durations.",
-      reference: "Manuscript Methods § Uncertainty Analysis; Table A11; Figure 9"
+      reference: "Manuscript Methods; Supplementary Material; Figure S5"
     },
     scenario_grid: {
-      title: "National Scenario Grid (Figure 8)",
+      title: "National Scenario Grid (Figure S4)",
       category: "Sensitivity Matrix",
       summary: "11 camp frequency levels (2 to 22) × 4 task-shifting intensities (0%, 10%, 20%, 30%).",
       details: "Simulates 44 combinations under R0 and R5. Coverage rises from 2.37% (Base TS0) to 51.15% (S22 TS30).",
-      reference: "Tables A5–A13; Figure 8"
+      reference: "Supplementary Material; Figure S4"
     },
     custom_country_guide: {
       title: "Custom Country & Global Modeler",
@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
       category: "Visual DES Software Simulation",
       summary: "Floorplan representation of a school dental camp showing patient queueing, provider workstations, and dynamic resource states.",
       details: "In classical Discrete Event Simulation (DES), entities (students) move chronologically through discrete states: Arrival → Queue Waiting → Service Acquisition → Treatment Completion → Discharge. Resources (Dentist, Auxiliary, Teacher) dynamically switch between BUSY and IDLE based on stochastic service durations drawn from clinical distributions.",
-      reference: "Manuscript § Discrete Event Simulation Architecture; Equations 1–13"
+      reference: "Manuscript Methods"
     }
   };
 
@@ -1093,7 +1093,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (elTotalNeed) elTotalNeed.textContent = `${poolM} Children`;
     if (elReached) elReached.textContent = `${reachedM} (${coveragePct}%)`;
-    if (elDentistSaved) elDentistSaved.textContent = `${dentistSavedPct}% for Hospital Clinics`;
+    if (elDentistSaved) elDentistSaved.textContent = `${nat.dent_util.toFixed(1)}% on camp procedures`;
     if (elDentistsNeeded) elDentistsNeeded.textContent = `${dentistsNeededFormatted} Dedicated Dentists`;
 
     if (elBody) {
@@ -1101,13 +1101,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (tierName === 'Status quo') {
         narrative = `Under the <strong>Status Quo Baseline</strong> (2 camps/month per dentist, 0% delegation): Dentists work alone without auxiliary support. The outreach reaches <strong>${reachedM}</strong> children per year (only <strong>${coveragePct}%</strong> of the ${poolM} with untreated caries in ${countryName}). A massive unmet gap of <strong>${unmetM}</strong> children remains unserved. <strong>${dentistsNeededFormatted}</strong> additional dedicated dentists would be needed to close this gap under solo practice.`;
       } else if (tierName === 'Plausible') {
-        narrative = `Under the recommended <strong>Plausible Tier</strong> (8 camps/month per dentist, 30% task delegation): School camps deliver care to <strong>${reachedM}</strong> unique children per year (<strong>${coveragePct}%</strong> national coverage). By delegating preventive fluoride varnish to auxiliary nurses and tooth-brushing drills to teachers, <strong>${dentistSavedPct}%</strong> of dentist contracted capacity is preserved for complex restorative hospital care. To eliminate the remaining <strong>${unmetM}</strong> unreached caries burden, <strong>${dentistsNeededFormatted}</strong> dedicated school dentists are needed.`;
+        narrative = `Under the recommended <strong>Plausible Tier</strong> (8 camps/month per dentist, 30% task delegation): School camps deliver care to <strong>${reachedM}</strong> unique children per year (<strong>${coveragePct}%</strong> national coverage). With fluoride varnish delegated to dental auxiliaries and oral health education to teachers, camp procedures take <strong>${dentistUtilPct}%</strong> of available dentists' working time. To eliminate the remaining <strong>${unmetM}</strong> unreached caries burden, <strong>${dentistsNeededFormatted}</strong> dedicated school dentists are needed.`;
       } else if (tierName === 'Stretch') {
-        narrative = `Under the <strong>Stretch Tier</strong> (12 camps/month per dentist, 30% delegation, 80% workforce deployment): Outreach expands significantly to reach <strong>${reachedM}</strong> children annually (<strong>${coveragePct}%</strong> national coverage). Dentists spend ${dentistUtilPct}% of monthly time on school camp procedures while <strong>${dentistSavedPct}%</strong> remains protected for hospital wards. The unmet caries burden decreases to <strong>${unmetM}</strong> children, with <strong>${dentistsNeededFormatted}</strong> dedicated dentists needed to close the remaining gap.`;
+        narrative = `Under the <strong>Stretch Tier</strong> (12 camps/month per dentist, 30% delegation, 80% workforce deployment): Outreach expands significantly to reach <strong>${reachedM}</strong> children annually (<strong>${coveragePct}%</strong> national coverage). Camp procedures take <strong>${dentistUtilPct}%</strong> of available dentists' working time. The unmet caries burden decreases to <strong>${unmetM}</strong> children, with <strong>${dentistsNeededFormatted}</strong> dedicated dentists needed to close the remaining gap.`;
       } else if (tierName === 'Theoretical max') {
         narrative = `Under the <strong>Theoretical Maximum Bound</strong> (22 camps/month, daily deployment of 100% of public dentists): Outreach reaches an upper bound of <strong>${reachedM}</strong> children per year (<strong>${coveragePct}%</strong> coverage). This intensive daily deployment consumes ${dentistUtilPct}% of all public dentist working hours nationwide, leaving <strong>${unmetM}</strong> children unserved due to finite national dentist supply.`;
       } else {
-        narrative = `Under this <strong>Custom Scenario</strong> (${state.params.camps} camps/mo, ${state.params.ts}% team delegation, φ=${state.params.phi.toFixed(2)}): The simulation yields <strong>${reachedM}</strong> unique children treated annually (<strong>${coveragePct}%</strong> of the ${poolM} caries burden in ${countryName}). Dentists spend ${dentistUtilPct}% of their contracted hours on school camp procedures, preserving <strong>${dentistSavedPct}%</strong> for hospital clinics. Eliminating the remaining unmet gap of <strong>${unmetM}</strong> children requires <strong>${dentistsNeededFormatted}</strong> dedicated dental surgeons.`;
+        narrative = `Under this <strong>Custom Scenario</strong> (${state.params.camps} camps/mo, ${state.params.ts}% team delegation, φ=${state.params.phi.toFixed(2)}): The simulation yields <strong>${reachedM}</strong> unique children treated annually (<strong>${coveragePct}%</strong> of the ${poolM} caries burden in ${countryName}). Camp procedures take <strong>${dentistUtilPct}%</strong> of available dentists' working time. Eliminating the remaining unmet gap of <strong>${unmetM}</strong> children requires <strong>${dentistsNeededFormatted}</strong> dedicated dental surgeons.`;
       }
       elBody.innerHTML = narrative;
     }
@@ -1796,13 +1796,13 @@ document.addEventListener('DOMContentLoaded', () => {
       alertBox.className = 'clinic-alert-box clinic-alert-info';
       if (alertIcon) alertIcon.className = 'fas fa-info-circle';
       alertTitle.textContent = `Partial Task Delegation Active (${tsLevel}% TS)`;
-      alertText.innerHTML = `Oral health education and tooth-brushing instructions are delegated to classroom teachers at Room 3C. However, dentists still deliver all fluoride applications alongside complex restorations at Chair 3A. ${dentistQueueLen > 0 ? `<strong>${dentistQueueLen} students</strong> currently waiting outside Chair 3A.` : ''}`;
+      alertText.innerHTML = `Oral health education is delegated to classroom teachers at Room 3C and fluoride varnish to the dental auxiliary at Bay 3B, with ${tsLevel}% more referrals per camp. ${dentistQueueLen > 0 ? `<strong>${dentistQueueLen} students</strong> currently waiting outside Chair 3A.` : ''}`;
       if (alertBadge) alertBadge.textContent = 'Partial Delegation';
     } else {
       alertBox.className = 'clinic-alert-box clinic-alert-success';
       if (alertIcon) alertIcon.className = 'fas fa-check-circle';
       alertTitle.textContent = 'Balanced Multidisciplinary Clinical Workflow (Safe Delegation Active)';
-      alertText.innerHTML = `Fluoride varnish application is safely delegated to trained auxiliary nurses at Bay 3B, and oral hygiene coaching is managed by classroom teachers at Room 3C. Dentist Operatory Chair 3A is reserved strictly for restorations (ART, GIC, pulpectomy, extractions) and specialized diagnoses. Chair congestion is reduced by over 60%.`;
+      alertText.innerHTML = `Fluoride varnish is delegated to trained dental auxiliaries at Bay 3B, and oral health education to classroom teachers at Room 3C. Dentist Operatory Chair 3A is reserved for clinical procedures (ART, stainless steel crowns, pulpectomy, GIC/composite and scaling).`;
       if (alertBadge) alertBadge.textContent = 'Optimal Patient Flow';
     }
   }
@@ -2022,7 +2022,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // MANUSCRIPT PLOTS GALLERY (FIGURES 1 THROUGH 9)
+  // MANUSCRIPT PLOTS GALLERY
   // =========================================================================
 
   function setupManuscriptPlots() {
@@ -2095,8 +2095,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="fig1Container" data-title="Figure 1: Simulation Architecture & Workflow Flowchart" data-fig="Figure1">
             <i class="fas fa-camera"></i> Download HD Image (300 DPI)
           </button>
-          <a href="figures/Figure1.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution publication PNG">
-            <i class="fas fa-external-link-alt"></i> Publication PNG
+          <a href="figures/Figure1.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution manuscript PNG">
+            <i class="fas fa-external-link-alt"></i> Manuscript PNG
           </a>
         </div>
       </div>
@@ -2109,7 +2109,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:6px; padding:12px;">
             <div style="font-weight:700; color:#8b5cf6;"><i class="fas fa-clipboard-check"></i> 2. Auxiliary Admissions & Triage</div>
-            <div style="font-size:0.75rem; color:#64748b; margin-top:4px;">Morning FIFO queue where auxiliary nurses admit referred students in U(0.5, 1.5) min and route to treatment streams.</div>
+            <div style="font-size:0.75rem; color:#64748b; margin-top:4px;">Morning FIFO queue where dental auxiliaries admit referred students in U(0.5, 1.5) min and route to treatment streams.</div>
           </div>
           <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:6px; padding:12px;">
             <div style="font-weight:700; color:#10b981;"><i class="fas fa-stream"></i> 3. Lindley Recursion Engine</div>
@@ -2122,8 +2122,8 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <div style="background:#ffffff; padding:14px; border-radius:6px; border:1px solid #e2e8f0; display:inline-block; max-width:100%;">
-          <div style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:10px;">Publication Architecture Diagram (Figure 1):</div>
-          <img src="figures/Figure1.png" alt="Figure 1 publication" style="max-width:100%; height:auto; max-height:480px; border-radius:4px; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+          <div style="font-size:0.82rem; font-weight:700; color:#334155; margin-bottom:10px;">Architecture Diagram (Figure 1):</div>
+          <img src="figures/Figure1.png" alt="Figure 1" style="max-width:100%; height:auto; max-height:480px; border-radius:4px; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
         </div>
       </div>
     `;
@@ -2142,8 +2142,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="canvasFig2" data-title="Figure 2: Resource Utilization Across Camp Days" data-fig="Figure2">
             <i class="fas fa-camera"></i> Download HD Image (300 DPI)
           </button>
-          <a href="figures/Figure2.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution publication PNG">
-            <i class="fas fa-external-link-alt"></i> Publication PNG
+          <a href="figures/Figure2.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution manuscript PNG">
+            <i class="fas fa-external-link-alt"></i> Manuscript PNG
           </a>
         </div>
       </div>
@@ -2183,17 +2183,17 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
         <div>
-          <h3 style="font-size:1.05rem; font-weight:700;">Figure 3: National Coverage Across Feasibility Tiers</h3>
+          <h3 style="font-size:1.05rem; font-weight:700;">Figure S1: National Coverage Across Feasibility Tiers</h3>
           <p style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
             Annual coverage (%) of unique children with caries reached across feasibility tiers and sensitivity variants.
           </p>
         </div>
         <div style="display:flex; gap:8px;">
-          <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="canvasFig3" data-title="Figure 3: National Coverage Across Feasibility Tiers" data-fig="Figure3">
+          <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="canvasFig3" data-title="Figure S1: National Coverage Across Feasibility Tiers" data-fig="FigureS1">
             <i class="fas fa-camera"></i> Download HD Image (300 DPI)
           </button>
-          <a href="figures/Figure3.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution publication PNG">
-            <i class="fas fa-external-link-alt"></i> Publication PNG
+          <a href="figures/FigureS1.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution manuscript PNG">
+            <i class="fas fa-external-link-alt"></i> Manuscript PNG
           </a>
         </div>
       </div>
@@ -2241,17 +2241,17 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
         <div>
-          <h3 style="font-size:1.05rem; font-weight:700;">Figure 4: Age-Specific Unique Children Reached across the Scenario Grid</h3>
+          <h3 style="font-size:1.05rem; font-weight:700;">Figure S2: Age-Specific Unique Children Reached across the Scenario Grid</h3>
           <p style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
             Unique children reached (Millions) in classes 1–3 (6–8y), 4–6 (9–11y), and 7–10 (12–15y) across camp frequencies (Base to S22) and task-shifting levels.
           </p>
         </div>
         <div style="display:flex; gap:8px;">
-          <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="canvasFig4" data-title="Figure 4: Age-Specific Unique Children Reached" data-fig="Figure4">
+          <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="canvasFig4" data-title="Figure S2: Age-Specific Unique Children Reached" data-fig="FigureS2">
             <i class="fas fa-camera"></i> Download HD Image (300 DPI)
           </button>
-          <a href="figures/Figure4.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution publication PNG">
-            <i class="fas fa-external-link-alt"></i> Publication PNG
+          <a href="figures/FigureS2.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution manuscript PNG">
+            <i class="fas fa-external-link-alt"></i> Manuscript PNG
           </a>
         </div>
       </div>
@@ -2293,17 +2293,17 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
         <div>
-          <h3 style="font-size:1.05rem; font-weight:700;">Figure 5: Population-Level DMFT Reduction Across Scenarios</h3>
+          <h3 style="font-size:1.05rem; font-weight:700;">Figure S3: Population-Level DMFT Reduction Across Scenarios</h3>
           <p style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
             Effectiveness-weighted DMFT reduction relative to initial caries burden across age groups and scenario grid.
           </p>
         </div>
         <div style="display:flex; gap:8px;">
-          <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="canvasFig5" data-title="Figure 5: Population-Level DMFT Reduction Across Scenarios" data-fig="Figure5">
+          <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="canvasFig5" data-title="Figure S3: Population-Level DMFT Reduction Across Scenarios" data-fig="FigureS3">
             <i class="fas fa-camera"></i> Download HD Image (300 DPI)
           </button>
-          <a href="figures/Figure5.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution publication PNG">
-            <i class="fas fa-external-link-alt"></i> Publication PNG
+          <a href="figures/FigureS3.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution manuscript PNG">
+            <i class="fas fa-external-link-alt"></i> Manuscript PNG
           </a>
         </div>
       </div>
@@ -2345,17 +2345,17 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
         <div>
-          <h3 style="font-size:1.05rem; font-weight:700;">Figure 6: State-Level Annual Coverage Under Plausible Scenario</h3>
+          <h3 style="font-size:1.05rem; font-weight:700;">Figure 3: State-Level Annual Coverage Under Plausible Scenario</h3>
           <p style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
             35 Indian states and UTs ranked by annual coverage (%) with 95% uncertainty intervals under the headline Plausible scenario.
           </p>
         </div>
         <div style="display:flex; gap:8px;">
-          <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="canvasFig6" data-title="Figure 6: State-Level Coverage Ranking with 95% UI" data-fig="Figure6">
+          <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="canvasFig6" data-title="Figure 3: State-Level Coverage Ranking with 95% UI" data-fig="Figure3">
             <i class="fas fa-camera"></i> Download HD Image (300 DPI)
           </button>
-          <a href="figures/Figure6.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution publication PNG">
-            <i class="fas fa-external-link-alt"></i> Publication PNG
+          <a href="figures/Figure3.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution manuscript PNG">
+            <i class="fas fa-external-link-alt"></i> Manuscript PNG
           </a>
         </div>
       </div>
@@ -2402,17 +2402,17 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
         <div>
-          <h3 style="font-size:1.05rem; font-weight:700;">Figure 7: Structural Disparity in Workforce Allocation</h3>
+          <h3 style="font-size:1.05rem; font-weight:700;">Figure 4: Structural Disparity in Workforce Allocation</h3>
           <p style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
             Relationship between students per government dentist (log scale) and achievable annual coverage.
           </p>
         </div>
         <div style="display:flex; gap:8px;">
-          <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="canvasFig7" data-title="Figure 7: Students per Dentist vs Coverage (Workforce Disparity)" data-fig="Figure7">
+          <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="canvasFig7" data-title="Figure 4: Students per Dentist vs Coverage (Workforce Disparity)" data-fig="Figure4">
             <i class="fas fa-camera"></i> Download HD Image (300 DPI)
           </button>
-          <a href="figures/Figure7.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution publication PNG">
-            <i class="fas fa-external-link-alt"></i> Publication PNG
+          <a href="figures/Figure4.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution manuscript PNG">
+            <i class="fas fa-external-link-alt"></i> Manuscript PNG
           </a>
         </div>
       </div>
@@ -2480,17 +2480,17 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
         <div>
-          <h3 style="font-size:1.05rem; font-weight:700;">Figure 8: National Scenario Grid Heatmaps</h3>
+          <h3 style="font-size:1.05rem; font-weight:700;">Figure S4: National Scenario Grid Heatmaps</h3>
           <p style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
             Continuous response surface of Coverage (%), In-year YLDs averted, and DMFT reduction (%) across Camps (2 to 22) × TS (0% to 30%).
           </p>
         </div>
         <div style="display:flex; gap:8px;">
-          <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="fig8TableContainer" data-title="Figure 8: National Scenario Grid Heatmaps" data-fig="Figure8">
+          <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="fig8TableContainer" data-title="Figure S4: National Scenario Grid Heatmaps" data-fig="FigureS4">
             <i class="fas fa-camera"></i> Download HD Image (300 DPI)
           </button>
-          <a href="figures/Figure8.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution publication PNG">
-            <i class="fas fa-external-link-alt"></i> Publication PNG
+          <a href="figures/FigureS4.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution manuscript PNG">
+            <i class="fas fa-external-link-alt"></i> Manuscript PNG
           </a>
         </div>
       </div>
@@ -2525,17 +2525,17 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
         <div>
-          <h3 style="font-size:1.05rem; font-weight:700;">Figure 9: Parameter Uncertainty & Tornado Influence</h3>
+          <h3 style="font-size:1.05rem; font-weight:700;">Figure S5: Parameter Uncertainty & Tornado Influence</h3>
           <p style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">
             Spearman correlation of model inputs with national outcomes across 300 PSA draws.
           </p>
         </div>
         <div style="display:flex; gap:8px;">
-          <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="canvasFig9" data-title="Figure 9: Parameter Uncertainty & Tornado Influence (PSA)" data-fig="Figure9">
+          <button class="btn btn-sm btn-outline btn-download-fig-hd" data-canvas="canvasFig9" data-title="Figure S5: Parameter Uncertainty & Tornado Influence (PSA)" data-fig="FigureS5">
             <i class="fas fa-camera"></i> Download HD Image (300 DPI)
           </button>
-          <a href="figures/Figure9.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution publication PNG">
-            <i class="fas fa-external-link-alt"></i> Publication PNG
+          <a href="figures/FigureS5.png" target="_blank" class="btn btn-sm btn-outline" title="Open high-resolution manuscript PNG">
+            <i class="fas fa-external-link-alt"></i> Manuscript PNG
           </a>
         </div>
       </div>
@@ -2688,7 +2688,7 @@ document.addEventListener('DOMContentLoaded', () => {
     studentModal.classList.add('active');
   }
 
-  // --- Charts (LinkedIn Pastel Styling) ---
+  // --- Charts (Pastel Styling) ---
   function renderTiersChart() {
     const canvas = document.getElementById('chartTiersCanvas');
     if (!canvas || typeof Chart === 'undefined') return;

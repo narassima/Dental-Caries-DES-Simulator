@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="calculator.css?v=1.0">
 
   <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.6.1"></script>
 </head>
 <body class="calc-body">
 
@@ -183,7 +183,7 @@
                 <span id="badgeDelegationVal" class="calc-label-badge">30% TS</span>
               </label>
               <input type="number" id="inputTs" class="calc-input" min="0" max="30" step="5" value="30">
-              <div class="calc-help-text">Delegates prevention to nurses & teachers.</div>
+              <div class="calc-help-text">Delegates prevention to auxiliaries & teachers.</div>
             </div>
 
             <div class="calc-form-group">
@@ -219,9 +219,9 @@
             <div class="calc-form-group">
               <label class="calc-label" for="inputDentists">
                 <span>Public Dental Surgeons</span>
-                <span id="badgeDentistsVal" class="calc-label-badge">8,543</span>
+                <span id="badgeDentistsVal" class="calc-label-badge">10,287</span>
               </label>
-              <input type="number" id="inputDentists" class="calc-input" min="1" step="50" value="8543">
+              <input type="number" id="inputDentists" class="calc-input" min="1" step="50" value="10287">
               <div class="calc-help-text">Rostered public dental workforce.</div>
             </div>
 
@@ -236,11 +236,11 @@
 
             <div class="calc-form-group">
               <label class="calc-label" for="inputAuxRatio">
-                <span>Nurses per Dentist</span>
+                <span>Auxiliaries per Dentist</span>
                 <span id="badgeAuxVal" class="calc-label-badge">2.0</span>
               </label>
               <input type="number" id="inputAuxRatio" class="calc-input" min="0" max="10" step="0.5" value="2.0">
-              <div class="calc-help-text">Auxiliary nurses for varnish & triage.</div>
+              <div class="calc-help-text">Dental auxiliaries for varnish & admission.</div>
             </div>
 
             <div class="calc-form-group">
@@ -266,28 +266,28 @@
           <div class="calc-form-group">
             <label class="calc-label" for="inputTotalEnrolment">
               <span>Total School Population (6–15y)</span>
-              <span id="badgeTotalEnr" class="calc-label-badge">130.9 M</span>
+              <span id="badgeTotalEnr" class="calc-label-badge">107.9 M</span>
             </label>
-            <input type="number" id="inputTotalEnrolment" class="calc-input" min="1000" step="100000" value="130900000">
+            <input type="number" id="inputTotalEnrolment" class="calc-input" min="1000" step="100000" value="107869006">
             <div class="calc-help-text">Editing total auto-scales the three age cohorts below.</div>
           </div>
 
           <div class="calc-input-grid-3">
             <div class="calc-form-group">
               <label class="calc-label" for="inputPop6_8" style="font-size:0.78rem;">Primary (6–8y)</label>
-              <input type="number" id="inputPop6_8" class="calc-input" min="500" step="50000" value="38200000">
+              <input type="number" id="inputPop6_8" class="calc-input" min="500" step="50000" value="34230216">
               <div class="calc-help-text">Classes 1–3</div>
             </div>
 
             <div class="calc-form-group">
               <label class="calc-label" for="inputPop9_11" style="font-size:0.78rem;">Upper Prim. (9–11y)</label>
-              <input type="number" id="inputPop9_11" class="calc-input" min="500" step="50000" value="44100000">
+              <input type="number" id="inputPop9_11" class="calc-input" min="500" step="50000" value="34244196">
               <div class="calc-help-text">Classes 4–6</div>
             </div>
 
             <div class="calc-form-group">
               <label class="calc-label" for="inputPop12_15" style="font-size:0.78rem;">Secondary (12–15y)</label>
-              <input type="number" id="inputPop12_15" class="calc-input" min="500" step="50000" value="48600000">
+              <input type="number" id="inputPop12_15" class="calc-input" min="500" step="50000" value="39394594">
               <div class="calc-help-text">Classes 7–10</div>
             </div>
           </div>
@@ -298,7 +298,7 @@
           <div class="calc-card-header">
             <div>
               <h2 class="calc-card-title"><i class="fas fa-tooth" style="color:var(--calc-primary);"></i> 5. Caries Epidemiology & Burden</h2>
-              <div class="calc-card-subtitle">Baseline DMFT index, brushing effect, and age-specific prevalence</div>
+              <div class="calc-card-subtitle">Baseline DMFT index, OHE need reduction, and age-specific prevalence</div>
             </div>
           </div>
 
@@ -306,15 +306,15 @@
             <div class="calc-form-group">
               <label class="calc-label" for="inputMeanDmft">
                 <span>Mean Baseline DMFT</span>
-                <span id="badgeDmftVal" class="calc-label-badge">2.4</span>
+                <span id="badgeDmftVal" class="calc-label-badge">1.4</span>
               </label>
-              <input type="number" id="inputMeanDmft" class="calc-input" min="0.1" max="12.0" step="0.1" value="2.4">
+              <input type="number" id="inputMeanDmft" class="calc-input" min="0.1" max="12.0" step="0.1" value="1.4">
               <div class="calc-help-text">Decayed, Missing, Filled Teeth score.</div>
             </div>
 
             <div class="calc-form-group">
               <label class="calc-label" for="inputRBenefit">
-                <span>Brushing Benefit (R %)</span>
+                <span>OHE Need Reduction (R %)</span>
                 <span id="badgeRVal" class="calc-label-badge">0%</span>
               </label>
               <input type="number" id="inputRBenefit" class="calc-input" min="0" max="10" step="1" value="0">
@@ -325,17 +325,17 @@
           <div class="calc-input-grid-3">
             <div class="calc-form-group">
               <label class="calc-label" for="inputPrev6_8" style="font-size:0.78rem;">Prevalence 6–8y (%)</label>
-              <input type="number" id="inputPrev6_8" class="calc-input" min="0.1" max="100.0" step="0.1" value="52.0">
+              <input type="number" id="inputPrev6_8" class="calc-input" min="0.1" max="100.0" step="0.01" value="41.71">
             </div>
 
             <div class="calc-form-group">
               <label class="calc-label" for="inputPrev9_11" style="font-size:0.78rem;">Prevalence 9–11y (%)</label>
-              <input type="number" id="inputPrev9_11" class="calc-input" min="0.1" max="100.0" step="0.1" value="55.0">
+              <input type="number" id="inputPrev9_11" class="calc-input" min="0.1" max="100.0" step="0.01" value="34.8">
             </div>
 
             <div class="calc-form-group">
               <label class="calc-label" for="inputPrev12_15" style="font-size:0.78rem;">Prevalence 12–15y (%)</label>
-              <input type="number" id="inputPrev12_15" class="calc-input" min="0.1" max="100.0" step="0.1" value="60.0">
+              <input type="number" id="inputPrev12_15" class="calc-input" min="0.1" max="100.0" step="0.01" value="23.48">
             </div>
           </div>
         </div>
@@ -374,7 +374,7 @@
                 <span id="badgeAdmitVal" class="calc-label-badge">1.0 min</span>
               </label>
               <input type="number" id="inputAdmitTime" class="calc-input" min="0.2" max="5.0" step="0.1" value="1.0">
-              <div class="calc-help-text">Average intake and triage duration per child by auxiliary nurse.</div>
+              <div class="calc-help-text">Average intake and triage duration per child by dental auxiliary.</div>
             </div>
           </div>
 
@@ -411,9 +411,9 @@
           </div>
 
           <div class="calc-kpi-card amber">
-            <div class="calc-kpi-title">Dentist Time Protected</div>
-            <div id="kpiDentistSaved" class="calc-kpi-value">85.0%</div>
-            <div class="calc-kpi-sub">Preserved for hospital surgery</div>
+            <div class="calc-kpi-title">Time Outside Camp Procedures</div>
+            <div id="kpiDentistSaved" class="calc-kpi-value">85.5%</div>
+            <div class="calc-kpi-sub">Share of working time; camp days also take dentists from clinics</div>
           </div>
 
           <div class="calc-kpi-card rose">
@@ -424,7 +424,7 @@
 
           <div class="calc-kpi-card purple">
             <div class="calc-kpi-title">In-Year Morbidity Averted</div>
-            <div id="kpiYldInYear" class="calc-kpi-value">7,028</div>
+            <div id="kpiYldInYear" class="calc-kpi-value">7,110</div>
             <div class="calc-kpi-sub">Years lived with disability</div>
           </div>
         </div>
@@ -477,10 +477,10 @@
                   <td style="text-align:center; font-weight:700; color:#057642;" id="compGainCoverage">+9.66 pp (5.1× Reach)</td>
                 </tr>
                 <tr>
-                  <td><strong>Hospital Dentist Working Time Protected</strong></td>
-                  <td style="text-align:center;" id="compBaseSaved">96.5%</td>
-                  <td style="text-align:center; font-weight:700;" id="compSelSaved">85.0%</td>
-                  <td style="text-align:center;">Protected for Complex Surgery</td>
+                  <td><strong>Working Time Outside Camp Procedures</strong></td>
+                  <td style="text-align:center;" id="compBaseSaved">96.0%</td>
+                  <td style="text-align:center; font-weight:700;" id="compSelSaved">85.5%</td>
+                  <td style="text-align:center;">Not the same as time left for clinics</td>
                 </tr>
                 <tr>
                   <td><strong>Dedicated Dentists Needed for 100%</strong></td>
@@ -491,7 +491,7 @@
                 <tr>
                   <td><strong>In-Year Morbidity Averted (YLDs)</strong></td>
                   <td style="text-align:center;" id="compBaseYld">1,380 YLDs</td>
-                  <td style="text-align:center; font-weight:700;" id="compSelYld">7,028 YLDs</td>
+                  <td style="text-align:center; font-weight:700;" id="compSelYld">7,110 YLDs</td>
                   <td style="text-align:center; font-weight:700; color:#057642;" id="compGainYld">+5,648 YLDs Averted</td>
                 </tr>
               </tbody>
@@ -504,7 +504,7 @@
           <div class="calc-card-header">
             <div>
               <h3 class="calc-card-title"><i class="fas fa-stethoscope" style="color:var(--calc-primary);"></i> Clinical Service Delivery Streams</h3>
-              <div class="calc-card-subtitle">Distribution of care across dentists, auxiliary nurses, and teachers</div>
+              <div class="calc-card-subtitle">Distribution of care across dentists, dental auxiliaries, and teachers</div>
             </div>
           </div>
 
@@ -516,7 +516,7 @@
             </div>
 
             <div style="border:1px solid var(--calc-border); border-radius:8px; padding:14px; background:#f8fafc;">
-              <div style="font-size:0.75rem; font-weight:700; color:#057642; text-transform:uppercase;">2. Auxiliary Dental Nurse</div>
+              <div style="font-size:0.75rem; font-weight:700; color:#057642; text-transform:uppercase;">2. Dental Auxiliary</div>
               <div style="font-size:1.15rem; font-weight:700; margin:4px 0;" id="procAuxCount">1.90 Million</div>
               <div style="font-size:0.76rem; color:var(--calc-text-muted);">Preventive fluoride varnish (5% NaF) & admission screening</div>
             </div>
@@ -524,7 +524,7 @@
             <div style="border:1px solid var(--calc-border); border-radius:8px; padding:14px; background:#f8fafc;">
               <div style="font-size:0.75rem; font-weight:700; color:#0891b2; text-transform:uppercase;">3. Trained Teacher</div>
               <div style="font-size:1.15rem; font-weight:700; margin:4px 0;" id="procTeacherCount">1.42 Million</div>
-              <div style="font-size:0.76rem; color:var(--calc-text-muted);">Classroom oral health coaching & tooth-brushing instruction</div>
+              <div style="font-size:0.76rem; color:var(--calc-text-muted);">Oral health education</div>
             </div>
           </div>
         </div>
@@ -649,10 +649,10 @@
         <div style="margin-bottom:20px;">
           <h4 style="font-size:0.98rem; font-weight:700; color:#0f172a; margin:0 0 6px 0;">1. Purpose of This Calculator</h4>
           <p style="font-size:0.85rem; color:#334155; margin:0 0 8px 0;">
-            Dental caries (tooth decay) is the most widespread chronic condition in school-age children globally, affecting over 500 million children in low- and middle-income countries. Public dental workforce shortages mean that solo dentists visiting schools face severe clinical bottlenecks: spending hours on tooth-brushing instruction and simple fluoride varnish while hundreds of children wait unserved.
+            Dental caries (tooth decay) is among the most common chronic conditions in school-age children. Public dental workforce shortages mean that dentists visiting schools alone spend much of the camp day on oral health education and fluoride varnish as well as clinical procedures.
           </p>
           <p style="font-size:0.85rem; color:#334155; margin:0;">
-            This tool evaluates how <strong>multidisciplinary team delegation (task-shifting)</strong> transforms school camps: delegating tooth-brushing education to trained classroom teachers and preventive fluoride varnish to auxiliary nurses, allowing dental surgeons to focus exclusively on restorative cavity treatments (ART/GIC fillings).
+            This tool evaluates how <strong>multidisciplinary team delegation (task-shifting)</strong> transforms school camps: delegating oral health education to trained classroom teachers and fluoride varnish to dental auxiliaries, leaving dental surgeons to deliver the clinical procedures.
           </p>
         </div>
 
@@ -662,7 +662,7 @@
           <ol style="font-size:0.85rem; color:#334155; margin:0; padding-left:20px; line-height:1.7;">
             <li><strong>Select or Upload Your Country:</strong> Use the Country dropdown to choose India (pre-loaded with national data and 35 states) or upload a custom Excel file for any nation, province, or district.</li>
             <li><strong>Choose a Policy Deployment Tier:</strong> Select between <em>Status Quo</em> (2 camps/month, solo dentist), <em>Plausible Target</em> (8 camps/month, 30% delegation — recommended), <em>Stretch</em> (12 camps/month), or <em>Theoretical Maximum</em>.</li>
-            <li><strong>Adjust Team Delegation Level:</strong> Choose between 0% (solo dentist), 10% (teachers), 20% (nurses), or 30% (full delegation).</li>
+            <li><strong>Adjust Team Delegation Level:</strong> Choose 0% (no delegation) or 10%, 20% or 30% (delegation with that many more referrals per camp).</li>
             <li><strong>Review Live Results:</strong> Watch the headline KPI cards, comparative table, and clinical breakdown update in real time.</li>
             <li><strong>Export Outputs:</strong> Download comprehensive Excel spreadsheets (.xlsx) or copy executive policy text for reports and presentations.</li>
           </ol>
@@ -725,7 +725,7 @@
           <ul style="font-size:0.84rem; color:#334155; margin:0; padding-left:20px; line-height:1.7;">
             <li><strong>Annual Children Reached:</strong> The total count of unique students who receive complete treatment during the academic year.</li>
             <li><strong>National Caries Coverage (%):</strong> The percentage of all school-age children with active untreated caries reached by the program.</li>
-            <li><strong>Dentist Time Protected:</strong> Percentage of dentist monthly contracted hours preserved for specialized restorative hospital clinics rather than routine school screenings.</li>
+            <li><strong>Time Outside Camp Procedures:</strong> Percentage of working time not spent on camp procedures. Camp days themselves also take dentists away from clinics.</li>
             <li><strong>Dedicated Dentists Needed:</strong> The number of additional full-time school dental surgeons required to reach 100% universal caries coverage under the selected policy model.</li>
             <li><strong>In-Year Morbidity Averted (YLDs):</strong> Cumulative Years Lived with Disability avoided among treated children using WHO Global Burden of Disease disability weights.</li>
           </ul>

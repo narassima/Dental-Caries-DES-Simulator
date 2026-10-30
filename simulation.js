@@ -1,12 +1,11 @@
 /**
  * Dental Caries Discrete Event Simulation (DES) Engine
- * Based on: "Optimising school-based dental caries prevention through task-shifting:
- * a state-level discrete event simulation across India"
+ * Based on: "Workforce capacity, task-shifting and school dental caries prevention coverage across India: A state-level discrete-event simulation"
  *
  * Implements:
  * 1. Lindley recursion FIFO queueing with explicit dentist, auxiliary, and teacher resources
  * 2. 10-month school-year layer with caries pool depletion, repeat visits (rho), and health outcomes
- * 3. Exact epidemiological and clinical parameters from Annexure A / Table A1-A14
+ * 3. Exact epidemiological and clinical parameters from the Supplementary Material
  * 4. Multi-country and custom province simulation capability
  */
 
@@ -20,7 +19,7 @@
   }
 }(typeof self !== 'undefined' ? self : this, function () {
 
-  // --- Constants & Reference Parameters (Annexure A, Table A1 & A2) ---
+  // --- Constants & Reference Parameters (Supplementary Material) ---
   const AGES = ["6 to 8", "9 to 11", "12 to 15"];
   
   const INTERVENTIONS = [
@@ -43,7 +42,7 @@
     "#06b6d4"  // Scaling: Cyan
   ];
 
-  // Table A2: % of students receiving each intervention, by age group (R0)
+  // Supplementary Material: % of students receiving each intervention, by age group (R0)
   const MIX_BASE = [
     // 6-8    9-11   12-15
     [0.4416, 0.4571, 0.3797], // OHE
@@ -55,7 +54,7 @@
     [0.0000, 0.0000, 0.1392]  // Scaling/mouthwash
   ];
 
-  // Table A2: DMFT reduction effectiveness ranges [lo, hi]
+  // Supplementary Material: DMFT reduction effectiveness ranges [lo, hi]
   const EFF_LO = [
     [0.15, 0.10, 0.10], // OHE
     [0.37, 0.37, 0.37], // FV
@@ -76,7 +75,7 @@
     [0.15, 0.15, 0.15]  // Scaling
   ];
 
-  // Table A2: Process time (minutes), Uniform(lo, hi)
+  // Supplementary Material: Process time (minutes), Uniform(lo, hi)
   const PT_LO = [10, 5, 15, 40, 40, 30, 10];
   const PT_HI = [15, 10, 20, 60, 90, 45, 15];
 
@@ -97,7 +96,7 @@
   const DUR_LO   = [0.25, 0.5, 1.0, 2.0, 1.0, 2.0, 0.25];
   const DUR_HI   = [1.0, 1.0, 3.0, 5.0, 3.0, 5.0, 1.0];
 
-  // Kerala baseline epidemiology (Table A1)
+  // Reference age-specific prevalence from Kerala school surveys
   const KERALA_PREV = [0.4171, 0.3480, 0.2348]; // 6-8, 9-11, 12-15
   const INIT_DMFT   = [0.99, 1.84, 1.37];
 

@@ -33,18 +33,18 @@
         ['Parameter_Key', 'Parameter_Name', 'Value', 'Unit', 'Recommended_Range', 'Description_and_Guidance', 'Model_Reference'],
         ['country_name', 'Country / Health Jurisdiction Name', 'India (National Baseline)', 'Text', 'e.g. India, Kenya, Brazil, Universal', 'Official name of the modeled country or province', 'Methods & Architecture'],
         ['currency_code', 'Local Currency Symbol', 'INR (₹)', 'Currency', 'e.g. $, ₹, €, £, ₦', 'Currency symbol used in economic benchmarking', 'Baseline Model Table 1'],
-        ['enrol_6_8', 'School Enrolment 6–8y (Primary)', 38200000, 'Students', '1,000 to 100,000,000', 'Target government/public school population in primary grades (classes 1–3)', 'UDISE+ 2024–25; Table A1'],
-        ['enrol_9_11', 'School Enrolment 9–11y (Upper Primary)', 44100000, 'Students', '1,000 to 100,000,000', 'Target government/public school population in upper primary grades (classes 4–6)', 'UDISE+ 2024–25; Table A1'],
-        ['enrol_12_15', 'School Enrolment 12–15y (Secondary)', 48600000, 'Students', '1,000 to 100,000,000', 'Target government/public school population in secondary grades (classes 7–10)', 'UDISE+ 2024–25; Table A1'],
-        ['dentists_public', 'Public Sector Dental Surgeons', 8543, 'FTE Dentists', '10 to 50,000', 'Total government dental surgeons available for public health and school programs', 'National Health Profile 2022; Table 2'],
-        ['auxiliaries_per_dentist', 'Auxiliaries per Dentist Ratio', 2.0, 'Ratio', '1.0 to 4.0', 'Trained dental hygienists, nurses, or ASHA workers deployed per dentist camp', 'Task-Shifting Model'],
+        ['enrol_6_8', 'School Enrolment 6–8y (Primary)', 34230216, 'Students', '1,000 to 100,000,000', 'Target government/public school population in primary grades (classes 1–3)', 'UDISE+ 2024–25; Supplementary Material'],
+        ['enrol_9_11', 'School Enrolment 9–11y (Upper Primary)', 34244196, 'Students', '1,000 to 100,000,000', 'Target government/public school population in upper primary grades (classes 4–6)', 'UDISE+ 2024–25; Supplementary Material'],
+        ['enrol_12_15', 'School Enrolment 12–15y (Secondary)', 39394594, 'Students', '1,000 to 100,000,000', 'Target government/public school population in secondary grades (classes 7–10)', 'UDISE+ 2024–25; Supplementary Material'],
+        ['dentists_public', 'Public Sector Dental Surgeons', 10287, 'FTE Dentists', '10 to 50,000', 'Total government dental surgeons available for public health and school programs', 'National Health Profile 2022; Supplementary Material'],
+        ['auxiliaries_per_dentist', 'Auxiliaries per Dentist Ratio', 2.0, 'Ratio', '1.0 to 4.0', 'Trained dental auxiliaries deployed per dentist camp', 'Task-Shifting Model'],
         ['teachers_per_school', 'Teachers Trained per School', 1.0, 'Ratio', '1.0 to 3.0', 'Designated school teachers trained in oral health education & referral logistics', 'Ayushman Bharat SHWP Guidelines'],
-        ['prev_6_8', 'Caries Prevalence 6–8y (Primary)', 0.52, 'Proportion (0–1)', '0.10 to 0.90 (or 10% to 90%)', 'Untreated dental caries prevalence in primary dentition', 'Janakiram et al. 2020; Table 2'],
-        ['prev_9_11', 'Caries Prevalence 9–11y (Upper Primary)', 0.55, 'Proportion (0–1)', '0.10 to 0.90 (or 10% to 90%)', 'Untreated dental caries prevalence in mixed dentition', 'Janakiram / Pandey 2021; Table 2'],
-        ['prev_12_15', 'Caries Prevalence 12–15y (Secondary)', 0.60, 'Proportion (0–1)', '0.10 to 0.90 (or 10% to 90%)', 'Untreated dental caries prevalence in permanent dentition', 'Pandey et al. 2021; Table 2'],
-        ['mean_dmft', 'Mean DMFT Index', 2.40, 'DMFT (0–32)', '0.5 to 8.0', 'Mean Decayed, Missing, and Filled Teeth in children with active caries', 'National Oral Health Survey; Table 1'],
+        ['prev_6_8', 'Caries Prevalence 6–8y (Primary)', 0.4171, 'Proportion (0–1)', '0.10 to 0.90 (or 10% to 90%)', 'Untreated dental caries prevalence in primary dentition', 'Reference profile from Kerala school surveys; Supplementary Material'],
+        ['prev_9_11', 'Caries Prevalence 9–11y (Upper Primary)', 0.348, 'Proportion (0–1)', '0.10 to 0.90 (or 10% to 90%)', 'Untreated dental caries prevalence in mixed dentition', 'Reference profile from Kerala school surveys; Supplementary Material'],
+        ['prev_12_15', 'Caries Prevalence 12–15y (Secondary)', 0.2348, 'Proportion (0–1)', '0.10 to 0.90 (or 10% to 90%)', 'Untreated dental caries prevalence in permanent dentition', 'Reference profile from Kerala school surveys; Supplementary Material'],
+        ['mean_dmft', 'Mean DMFT Index', 1.4, 'DMFT (0–32)', '0.5 to 8.0', 'Mean Decayed, Missing, and Filled Teeth in children with active caries', 'Supplementary Material'],
         ['camps_per_month', 'Operational Camps / Dentist / Month', 8, 'Camps/mo', '2 to 22 (2=Status quo, 8=Plausible, 22=Daily)', 'Operational intensity of school visits per government dentist', 'Feasibility Tiers Model'],
-        ['task_shifting_level', 'Task-Shifting Delegation Level (%)', 30, 'Percentage (0–30)', '0, 10, 20, or 30%', 'Percentage of treatments delegated to auxiliaries (FV) & teachers (OHE)', 'Headline Scenario Model'],
+        ['task_shifting_level', 'Task-Shifting Delegation Level (%)', 30, 'Percentage (0–30)', '0, 10, 20, or 30%', '0 = no delegation; above 0 = FV to auxiliaries and OHE to teachers, with this % more referrals per camp', 'Headline Scenario Model'],
         ['dentist_participation_phi', 'Workforce Participation Rate (phi)', 0.50, 'Proportion (0–1)', '0.30 to 1.00', 'Fraction of rostered public dentists actively participating in school camps', 'Policy Scenario S8; PSA parameter'],
         ['daily_camp_hours', 'Daily Camp Duration', 8.0, 'Hours', '4.0 to 8.0', 'Total daily working shift duration (480 minutes Lindley Queue)', 'Methods § Simulation Setup'],
         ['school_days_per_year', 'School Operational Days / Year', 220, 'Days', '180 to 250', 'Number of working school days available annually for camp scheduling', 'Academic Calendar']
@@ -317,7 +317,7 @@
       // -----------------------------------------------------------------------
       const execSummary = [
         ['DENTAL CARIES DISCRETE EVENT SIMULATION (DES) — MODEL OUTPUT REPORT'],
-        ['Title: Optimising school-based dental caries prevention through task-shifting'],
+        ['Title: Workforce capacity, task-shifting and school dental caries prevention coverage across India: A state-level discrete-event simulation'],
         ['Export Timestamp:', timeStr],
         ['Model Country / Scope:', countryName],
         ['Active Feasibility Tier:', state.tier],
@@ -334,12 +334,8 @@
           'Dentist_Utilization_pct',
           'Auxiliary_Utilization_pct',
           'Teacher_Utilization_pct',
-          'Untreated_Lesions_Averted_M',
           'InYear_YLDs_Averted',
-          'Total_Program_Cost_USD_M',
-          'Cost_per_Child_USD',
-          'Incremental_Cost_per_DALY_USD',
-          'WHO_Cost_Effectiveness_Status'
+          'Duration_Adjusted_YLDs_Averted'
         ],
         [
           'Status Quo',
@@ -348,15 +344,11 @@
           0.50,
           2.37,
           0.93,
-          3.5,
+          4.0,
+          2.2,
           0.0,
-          0.0,
-          0.81,
-          1374,
-          14.2,
-          15.27,
-          10335,
-          'Cost-Effective'
+          1393,
+          4377
         ],
         [
           'Plausible (Headline)',
@@ -365,15 +357,11 @@
           0.50,
           12.03,
           4.75,
-          15.0,
-          7.1,
-          15.0,
-          4.14,
-          7028,
-          42.8,
-          9.01,
-          6089,
-          'Highly Cost-Effective (< 1x GDP per capita $2,410)'
+          14.5,
+          5.2,
+          15.2,
+          7110,
+          22222
         ],
         [
           'Stretch',
@@ -382,15 +370,11 @@
           0.80,
           27.35,
           10.80,
-          22.5,
-          10.8,
-          22.5,
-          9.42,
-          15984,
-          68.4,
-          6.33,
-          4280,
-          'Highly Cost-Effective (< 1x GDP per capita $2,410)'
+          21.7,
+          5.2,
+          15.2,
+          16419,
+          50548
         ],
         [
           'Theoretical Max',
@@ -399,15 +383,11 @@
           1.00,
           51.15,
           20.18,
-          41.3,
-          18.2,
-          36.5,
-          17.60,
-          29871,
-          124.6,
-          6.17,
-          4171,
-          'Highly Cost-Effective (< 1x GDP per capita $2,410)'
+          39.8,
+          5.2,
+          15.2,
+          32463,
+          94608
         ]
       ];
 
@@ -422,12 +402,8 @@
         { wch: 22 }, // Dent Util
         { wch: 22 }, // Aux Util
         { wch: 22 }, // Teach Util
-        { wch: 26 }, // Lesions M
         { wch: 22 }, // YLDs
-        { wch: 24 }, // Cost M
-        { wch: 20 }, // Cost/Child
-        { wch: 28 }, // Cost/DALY
-        { wch: 42 }  // WHO status
+        { wch: 30 }  // Duration-adjusted YLDs
       ];
       XLSX.utils.book_append_sheet(wb, wsExec, 'Executive_Summary');
 
@@ -577,7 +553,7 @@
       }
 
       // -----------------------------------------------------------------------
-      // SHEET 4: Scenario_Grid_11x4 (Tables A5–A13 Reproduction)
+      // SHEET 4: Scenario_Grid_11x4 (Supplementary Material)
       // -----------------------------------------------------------------------
       const gridHeader = ['Camps_per_Month', 'TS_0_pct_Dentist_Only', 'TS_10_pct', 'TS_20_pct', 'TS_30_pct_Headline'];
       const gridData = [
@@ -598,7 +574,7 @@
       XLSX.utils.book_append_sheet(wb, wsGrid, 'Scenario_Grid_11x4');
 
       // -----------------------------------------------------------------------
-      // SHEET 5: Monte_Carlo_PSA_Influence (Figure 9 & Uncertainty Summary)
+      // SHEET 5: Monte_Carlo_PSA_Influence (Figure S5 & Uncertainty Summary)
       // -----------------------------------------------------------------------
       const psaHeader = ['Parameter_Code', 'Parameter_Description', 'Sampling_Distribution', 'Spearman_Rank_Correlation_Coverage', 'Spearman_Rank_Correlation_YLD', 'Dominance_Rank'];
       const psaData = [
@@ -685,7 +661,7 @@
             // Footer attribution watermark
             ctx.fillStyle = '#94a3b8';
             ctx.font = '18px Inter, system-ui, sans-serif';
-            ctx.fillText('Source: Discrete Event Simulation Model • High-Definition Publication Export', 70, exportHeight - 40);
+            ctx.fillText('Source: Discrete Event Simulation Model • High-Definition Export', 70, exportHeight - 40);
 
             const timestamp = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             ctx.textAlign = 'right';

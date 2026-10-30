@@ -20,19 +20,19 @@ document.addEventListener('DOMContentLoaded', function () {
       ts: 30,
       months: 10,
       shift_hours: 8.0,
-      dentists: 8543,
+      dentists: 10287,
       phi: 0.50,
       aux_ratio: 2.0,
       teacher_ratio: 1.0,
-      enrolment: 130900000,
-      pop_6_8: 38200000,
-      pop_9_11: 44100000,
-      pop_12_15: 48600000,
-      dmft: 2.4,
+      enrolment: 107869006,
+      pop_6_8: 34230216,
+      pop_9_11: 34244196,
+      pop_12_15: 39394594,
+      dmft: 1.4,
       r_pct: 0,
-      prev_6_8: 52.0,
-      prev_9_11: 55.0,
-      prev_12_15: 60.0,
+      prev_6_8: 41.71,
+      prev_9_11: 34.8,
+      prev_12_15: 23.48,
       students_per_camp: 14,
       ref_scale: 1.0,
       rho: 0.15,
@@ -41,14 +41,14 @@ document.addEventListener('DOMContentLoaded', function () {
     customCountry: {
       name: 'Custom Country Model',
       currency: 'USD ($)',
-      pop_6_8: 38200000,
-      pop_9_11: 44100000,
-      pop_12_15: 48600000,
-      dentists: 8543,
-      prev_6_8: 52.0,
-      prev_9_11: 55.0,
-      prev_12_15: 60.0,
-      init_dmft: 2.4,
+      pop_6_8: 34230216,
+      pop_9_11: 34244196,
+      pop_12_15: 39394594,
+      dentists: 10287,
+      prev_6_8: 41.71,
+      prev_9_11: 34.8,
+      prev_12_15: 23.48,
+      init_dmft: 1.4,
       provinces: []
     },
     uploadedData: null,
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (elInputDentists) {
       let d = parseInt(elInputDentists.value, 10);
-      calcState.params.dentists = isNaN(d) ? 8543 : Math.max(1, d);
+      calcState.params.dentists = isNaN(d) ? 10287 : Math.max(1, d);
     }
 
     if (elInputPhi) {
@@ -230,9 +230,9 @@ document.addEventListener('DOMContentLoaded', function () {
       calcState.params.teacher_ratio = isNaN(tr) ? 1.0 : Math.max(0, tr);
     }
 
-    const p6 = elInputPop6_8 ? (parseInt(elInputPop6_8.value, 10) || 38200000) : 38200000;
-    const p9 = elInputPop9_11 ? (parseInt(elInputPop9_11.value, 10) || 44100000) : 44100000;
-    const p12 = elInputPop12_15 ? (parseInt(elInputPop12_15.value, 10) || 48600000) : 48600000;
+    const p6 = elInputPop6_8 ? (parseInt(elInputPop6_8.value, 10) || 34230216) : 34230216;
+    const p9 = elInputPop9_11 ? (parseInt(elInputPop9_11.value, 10) || 34244196) : 34244196;
+    const p12 = elInputPop12_15 ? (parseInt(elInputPop12_15.value, 10) || 39394594) : 39394594;
     calcState.params.pop_6_8 = p6;
     calcState.params.pop_9_11 = p9;
     calcState.params.pop_12_15 = p12;
@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (elInputMeanDmft) {
       let dmft = parseFloat(elInputMeanDmft.value);
-      calcState.params.dmft = isNaN(dmft) ? 2.4 : Math.max(0.1, dmft);
+      calcState.params.dmft = isNaN(dmft) ? 1.4 : Math.max(0.1, dmft);
     }
 
     if (elInputRBenefit) {
@@ -308,13 +308,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function getEntities() {
     const isIndia = calcState.country === 'India';
-    if (isIndia && window.DATA_STORE && window.DATA_STORE.states) {
-      const baseDentists = 8543;
-      const baseEnrolment = 130900000;
+    if (isIndia && window.PAPER_DATA && window.PAPER_DATA.states_raw) {
+      const baseDentists = 10287;
+      const baseEnrolment = 107869006;
       const dentScale = calcState.params.dentists / baseDentists;
       const enrScale = calcState.params.enrolment / baseEnrolment;
 
-      return window.DATA_STORE.states.map(st => {
+      return window.PAPER_DATA.states_raw.map(st => {
         const p = (st.enr_primary_1_5 || 0) * enrScale;
         const u = (st.enr_upper_primary_6_8 || 0) * enrScale;
         const s = (st.enr_secondary_9_10 || 0) * enrScale;
@@ -505,9 +505,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (elCompGainYld) elCompGainYld.textContent = `+${Math.round(diffYld).toLocaleString()} YLDs Averted`;
 
     // Clinical Procedures Distribution
-    const dentProcs = Math.round(curr.served * (calcState.params.ts === 0 ? 1.0 : 0.30));
-    const auxProcs = Math.round(curr.served * (calcState.params.ts >= 20 ? 0.40 : (calcState.params.ts === 10 ? 0.10 : 0.05)));
-    const teacherProcs = Math.round(curr.served * (calcState.params.ts >= 10 ? 0.30 : 0.0));
+    const dentProcs = Math.round(curr.served * (calcState.params.ts === 0 ? 1.0 : 0.463));
+    const auxProcs = Math.round(curr.served * (calcState.params.ts === 0 ? 0.0 : 0.108));
+    const teacherProcs = Math.round(curr.served * (calcState.params.ts === 0 ? 0.0 : 0.429));
 
     const elProcDentistCount = document.getElementById('procDentistCount');
     if (elProcDentistCount) elProcDentistCount.textContent = formatM(dentProcs);
@@ -544,9 +544,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (tier === 'Status quo') {
       text = `Under current baseline practice (<strong>Status Quo Baseline</strong>: 2 camps/month per dentist, solo practice without task delegation), school dental outreach in <strong>${country}</strong> treats <strong>${reachedStr}</strong> children annually, achieving only <strong>${covStr}</strong> coverage of the ${poolStr} children with active tooth decay. A massive workforce gap remains: achieving full population coverage would mathematically demand over <strong>${dentistsNeeded}</strong> dedicated full-time dental surgeons.`;
     } else if (tier === 'Plausible') {
-      text = `Under the recommended <strong>Plausible Target</strong> (${calcState.params.camps} camps/month, ${calcState.params.ts}% team delegation to nurses & teachers), annual reach in <strong>${country}</strong> expands to <strong>${reachedStr}</strong> children (<strong>${covStr}</strong> national coverage). By shifting classroom brushing drills to teachers and fluoride varnish to auxiliary nurses, <strong>${dentSaved}%</strong> of dentist contracted time is preserved for hospital restorative procedures, reducing the national dental workforce requirement to <strong>${dentistsNeeded}</strong> dental surgeons.`;
+      text = `Under the recommended <strong>Plausible Target</strong> (${calcState.params.camps} camps/month, ${calcState.params.ts}% team delegation to auxiliaries & teachers), annual reach in <strong>${country}</strong> expands to <strong>${reachedStr}</strong> children (<strong>${covStr}</strong> national coverage). With oral health education delegated to teachers and fluoride varnish to dental auxiliaries, camp procedures take <strong>${curr.dent_util.toFixed(1)}%</strong> of available dentists' working time, and reaching the remaining children would need <strong>${dentistsNeeded}</strong> dedicated dental surgeons.`;
     } else if (tier === 'Stretch') {
-      text = `Under <strong>Stretch Outreach</strong> (${calcState.params.camps} camps/month, ${calcState.params.ts}% team delegation, ${Math.round(calcState.params.phi * 100)}% public dentist participation), annual coverage in <strong>${country}</strong> increases to <strong>${covStr}</strong>, delivering treatment to <strong>${reachedStr}</strong> children. Dentists spend ${curr.dent_util.toFixed(1)}% of contracted time on school camp procedures while <strong>${dentSaved}%</strong> remains protected for hospital clinical duties.`;
+      text = `Under <strong>Stretch Outreach</strong> (${calcState.params.camps} camps/month, ${calcState.params.ts}% team delegation, ${Math.round(calcState.params.phi * 100)}% public dentist participation), annual coverage in <strong>${country}</strong> increases to <strong>${covStr}</strong>, delivering treatment to <strong>${reachedStr}</strong> children. Camp procedures take <strong>${curr.dent_util.toFixed(1)}%</strong> of available dentists' working time.`;
     } else {
       text = `Under the <strong>Theoretical Maximum Bound</strong> (${calcState.params.camps} camps/month daily school visits, ${Math.round(calcState.params.phi * 100)}% public dentist participation), annual outreach treats <strong>${reachedStr}</strong> children (<strong>${covStr}</strong> coverage). This scenario demonstrates the mathematical ceiling of the existing public dental workforce supply in <strong>${country}</strong>, confirming that workforce availability—rather than scheduling—is the ultimate constraint.`;
     }
@@ -595,9 +595,9 @@ document.addEventListener('DOMContentLoaded', function () {
     elInputTotalEnrolment.addEventListener('input', function () {
       const total = parseInt(elInputTotalEnrolment.value, 10);
       if (!isNaN(total) && total > 0) {
-        // Proportions based on baseline 38.2M : 44.1M : 48.6M (Total: 130.9M)
-        const p6 = Math.round(total * (38.2 / 130.9));
-        const p9 = Math.round(total * (44.1 / 130.9));
+        // Proportions based on baseline 34.2M : 34.2M : 39.4M (Total: 107.9M)
+        const p6 = Math.round(total * (34.23 / 107.87));
+        const p9 = Math.round(total * (34.24 / 107.87));
         const p12 = total - p6 - p9;
 
         if (elInputPop6_8) elInputPop6_8.value = p6;
@@ -684,19 +684,19 @@ document.addEventListener('DOMContentLoaded', function () {
         ts: 30,
         months: 10,
         shift_hours: 8.0,
-        dentists: 8543,
+        dentists: 10287,
         phi: 0.50,
         aux_ratio: 2.0,
         teacher_ratio: 1.0,
-        enrolment: 130900000,
-        pop_6_8: 38200000,
-        pop_9_11: 44100000,
-        pop_12_15: 48600000,
-        dmft: 2.4,
+        enrolment: 107869006,
+        pop_6_8: 34230216,
+        pop_9_11: 34244196,
+        pop_12_15: 39394594,
+        dmft: 1.4,
         r_pct: 0,
-        prev_6_8: 52.0,
-        prev_9_11: 55.0,
-        prev_12_15: 60.0,
+        prev_6_8: 41.71,
+        prev_9_11: 34.8,
+        prev_12_15: 23.48,
         students_per_camp: 14,
         ref_scale: 1.0,
         rho: 0.15,
@@ -724,15 +724,15 @@ document.addEventListener('DOMContentLoaded', function () {
         calcState.country = 'India';
         calcState.countryName = 'India (National Baseline & 35 States)';
         calcState.currency = 'INR (₹)';
-        calcState.params.dentists = 8543;
-        calcState.params.enrolment = 130900000;
-        calcState.params.pop_6_8 = 38200000;
-        calcState.params.pop_9_11 = 44100000;
-        calcState.params.pop_12_15 = 48600000;
-        calcState.params.prev_6_8 = 52.0;
-        calcState.params.prev_9_11 = 55.0;
-        calcState.params.prev_12_15 = 60.0;
-        calcState.params.dmft = 2.4;
+        calcState.params.dentists = 10287;
+        calcState.params.enrolment = 107869006;
+        calcState.params.pop_6_8 = 34230216;
+        calcState.params.pop_9_11 = 34244196;
+        calcState.params.pop_12_15 = 39394594;
+        calcState.params.prev_6_8 = 41.71;
+        calcState.params.prev_9_11 = 34.8;
+        calcState.params.prev_12_15 = 23.48;
+        calcState.params.dmft = 1.4;
 
         if (elLblCountryTag) elLblCountryTag.textContent = 'Preloaded';
         syncDOMFromState();
